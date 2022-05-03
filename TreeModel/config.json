@@ -1,0 +1,29 @@
+{
+	"globals": {
+		"steps": 100,
+		"deltaT": 1,
+		"output": "csv"
+	},
+	"layers": [
+		{
+			"name": "TreeLayer",
+			"mapping": [
+				{
+					"parameter": "MaxX",
+					"value": 10
+				},
+				{
+					"parameter": "MaxY",
+					"value": 10
+				}
+			]
+		}
+	],
+	"agents": [
+		{
+			"name": "Tree",
+			"count": 1,
+			"file": "Resources/runner.csv"
+		}
+	]
+}
