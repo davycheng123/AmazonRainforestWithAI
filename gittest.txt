@@ -1,0 +1,3 @@
+This is a test to make a merge request to GitLab via Git Bash.
+
+- Asger Krabbe
