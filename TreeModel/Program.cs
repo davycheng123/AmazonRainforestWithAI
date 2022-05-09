@@ -2,9 +2,9 @@ using System;
 using System.IO;
 using Mars.Components.Starter;
 using Mars.Interfaces.Model;
-using RunnerModel.Model;
+using TreeModel.Model.Tree;
 
-namespace RunnerModel
+namespace TreeModel
 {
     internal static class Program
     {
