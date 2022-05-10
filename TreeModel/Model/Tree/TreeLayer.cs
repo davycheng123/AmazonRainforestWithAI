@@ -14,7 +14,7 @@ namespace TreeModel.Model.Tree
     public class TreeLayer : RasterLayer, ITreeLayer
     {
         private List<Tree> _trees;
-        private SpatialHashEnvironment<Tree> Environment;
+        public SpatialHashEnvironment<Tree> Environment;
         public override bool InitLayer(LayerInitData layerInitData, RegisterAgent registerAgentHandle ,
             UnregisterAgent unregisterAgent )
         {

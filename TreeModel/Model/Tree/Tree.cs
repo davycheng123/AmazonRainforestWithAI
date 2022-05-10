@@ -1,82 +1,36 @@
 using System;
-using Mars.Common;
-using Mars.Interfaces.Agents;
-using Mars.Interfaces.Annotations;
 using Mars.Interfaces.Environments;
 using RunnerModel.Model.Shared;
 
-namespace RunnerModel.Model
+namespace TreeModel.Model.Tree
 {
-    public class Tree : IAgent<TreeLayer>, IPositionable
+    public class Tree : ITree<TreeLayer>
     {
-        // PropertyDescription are for the .csv file, that store the data
-        [PropertyDescription (Name ="xpos")]
-        public double PosX {get; set;}
-
-        [PropertyDescription (Name ="ypos")]
-        public double PosY {get; set;}
-        
-        [PropertyDescription (Name ="specie")]
-        public Specie specie {get; set;}
-        
-        
-        /*  Attribute from Tree are:
-         *      - Position: X,Y
-         *      - Enum: specie
-         *      - int: wood
-         *      - int: age
-         *      - int: growthRate
-         *      - int: fruit
-         *      - bool: alive
-         *      - Enum: resilience
-         */     
-        
         public void Init(TreeLayer layer)
         {
-            // declare Layer
-            TreeLayer = layer;
-            //____________Location and Specie will be declared in a csv Data______________
-            // Location 
-            Position = Position.CreatePosition(PosX, PosY);
-            layer.Environment.Insert(this);
-            // Switches Case for the specie
-            switch (specie)
-            {
-                case Specie.PalmTree:
-                {
-                    wood = 1;
-                    age = 1;
-                    growthRate = 1;
-                    fruit = 1;
-                    alive = true;
-                    resilience = Resilience.Medium;
-                    break;
-                }
-                    ;
-                case Specie.NutmegTree:
-                {
-                    wood = 1;
-                    age = 1;
-                    growthRate = 1;
-                    fruit = 1;
-                    alive = true;
-                    resilience = Resilience.Medium;
-                    break;
-                }
-                    ;
-                case Specie.BrazilNutTree:
-                {
-                    wood = 1;
-                    age = 1;
-                    growthRate = 1;
-                    fruit = 1;
-                    alive = true;
-                    resilience = Resilience.Medium;
-                    break;
-                }
-            }
         }
-        
+
+
+        public void Tick()
+        {
+        }
+
+        public void Grow()
+        {
+        }
+
+        public void ProduceFruits()
+        {
+        }
+
+        public void Spread()
+        {
+        }
+
+        public void Die()
+        {
+        }
+
         public Resilience resilience { get; set; }
         
         public int growthRate { get; set; }
@@ -92,123 +46,9 @@ namespace RunnerModel.Model
         public TreeLayer TreeLayer { get; private set; }
         public Position Position { get; set; }
         
-        public void Tick()
-        { 
-            var goal = TreeLayer.Goal;
-            if(!goal.Equals(Position)) {
-                var bearing = PositionHelper.CalculateBearingCartesian(Position.X, Position.Y, goal.X, goal.Y);
-                TreeLayer.Environment.MoveTowards(this, bearing, 1);
-            }
-
-            // decide if tree grows on this tick //
-             switch (specie)
-            {
-                case Specie.PalmTree:
-                {
-                    // if alive & not at full growth, grow based of specie's growth pattern
-                    break;
-                }
-                    ;
-                case Specie.NutmegTree:
-                {
-                    // if alive & not at full growth, grow based of specie's growth pattern
-                    break;
-                }
-                    ;
-                case Specie.BrazilNutTree:
-                {
-                    // if alive & not at full growth, grow based of specie's growth pattern
-                    break;
-                }
-            }
-
-            // decide if tree produces fruits on this tick //
-             switch (specie)
-            {
-                case Specie.PalmTree:
-                {
-                    // if alive & at appropriate age, produce fruits based of specie's limit of fruit capacity
-                    break;
-                }
-                    ;
-                case Specie.NutmegTree:
-                {
-                    // if alive & at appropriate age, produce fruits based of specie's limit of fruit capacity
-                    break;
-                }
-                    ;
-                case Specie.BrazilNutTree:
-                {
-                    // if alive & at appropriate age, produce fruits based of specie's limit of fruit capacity
-                    break;
-                }
-            }
-
-            // decide if tree spreads seed(s) on this tick //
-            switch (specie)
-            {
-                case Specie.PalmTree:
-                {
-                    // if alive & at appropriate age, spread seeds based of weather & amount of fruit
-                    break;
-                }
-                    ;
-                case Specie.NutmegTree:
-                {
-                    // if alive & at appropriate age, spread seeds based of weather & amount of fruit
-                    break;
-                }
-                    ;
-                case Specie.BrazilNutTree:
-                {
-                    // if alive & at appropriate age, spread seeds based of weather & amount of fruit
-                    break;
-                }
-            }
-
-            // decide if tree dies on this tick //
-            switch (specie)
-            {
-                case Specie.PalmTree:
-                {
-                    // if reached max age (20 - 25 years)
-                    break;
-                }
-                    ;
-                case Specie.NutmegTree:
-                {
-                    // if outside forces kill it or randomly for adult
-                    break;
-                }
-                    ;
-                case Specie.BrazilNutTree:
-                {
-                    // if outside forces kill it or randomly for adult
-                    break;
-                }
-            }
-        }
-
-        public void Grow()
-        {
-
-        }
-
-        public void ProduceFruits()
-        {
-
-        }
-
-        public void Spread()
-        {
-
-        }
-
-        public void Die()
-        {
-
-        }
-
+        public int LifePoints { get; set; }
+            
+        // identifies the agent
         public Guid ID { get; set; }
     }
 }
