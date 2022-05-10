@@ -1,9 +1,11 @@
 using Mars.Interfaces.Agents;
+using Mars.Interfaces.Environments;
 using Mars.Interfaces.Layers;
+using RunnerModel.Model.Shared;
 
 namespace TreeModel.Model.Tree
 {
-    public interface ITree<in T> : IAgent<T> where T : ILayer
+    public interface ITree<in T> : IAgent<T>,IPositionable where T : ILayer
     {
         /// <summary>
         /// Increases wood mass, age and resilience.

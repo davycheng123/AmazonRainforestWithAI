@@ -45,6 +45,8 @@ namespace TreeModel.Model.Tree
 
         public TreeLayer TreeLayer { get; private set; }
         public Position Position { get; set; }
+        
+        public int LifePoints { get; set; }
             
         // identifies the agent
         public Guid ID { get; set; }
