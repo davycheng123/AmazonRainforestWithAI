@@ -1,9 +1,10 @@
 using Mars.Interfaces.Agents;
+using Mars.Interfaces.Environments;
 using Mars.Interfaces.Layers;
 
 namespace TreeModel.Model.Animal
 {
-    public interface IAnimal<in T> : IAgent<T> where T : ILayer
+    public interface IAnimal<in T> : IAgent<T>, IPositionable where T : ILayer
     {
         /// <summary>
         /// This moves the animal to a different location
