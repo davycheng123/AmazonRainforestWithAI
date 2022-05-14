@@ -1,7 +1,6 @@
 using Mars.Interfaces.Agents;
 using Mars.Interfaces.Environments;
 using Mars.Interfaces.Layers;
-using RunnerModel.Model.Shared;
 
 namespace TreeModel.Model.Tree
 {
@@ -17,7 +16,7 @@ namespace TreeModel.Model.Tree
         /// Increases the amount of fruits.
         /// Only adult trees produce fruit
         /// </summary>
-        void ProduceFruits(double rate);
+        void ProduceFruits();
 
         /// <summary>
         /// Attempts to spread on to neighboring cells

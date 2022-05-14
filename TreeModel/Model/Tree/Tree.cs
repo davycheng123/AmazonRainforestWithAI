@@ -1,6 +1,6 @@
 using System;
 using Mars.Interfaces.Environments;
-using RunnerModel.Model.Shared;
+using TreeModel.Model.Shared;
 
 namespace TreeModel.Model.Tree
 {
@@ -8,6 +8,8 @@ namespace TreeModel.Model.Tree
     {
         public void Init(TreeLayer layer)
         {
+            TreeLayer = layer;
+            //Console.WriteLine(Position);
         }
 
 
