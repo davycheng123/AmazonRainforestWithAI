@@ -1,4 +1,4 @@
-namespace RunnerModel.Model.Shared;
+namespace TreeModel.Model.Shared;
 
 public enum State
 {
