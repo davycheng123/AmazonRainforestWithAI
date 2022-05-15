@@ -13,7 +13,8 @@ namespace TreeModel.Model.Animal;
 public class AnimalLayer : RasterLayer,IAnimalLayer
 {
     public SpatialHashEnvironment<Animal> Environment;
-
+    
+    
     public override bool InitLayer(LayerInitData layerInitData, RegisterAgent registerAgentHandle,
         UnregisterAgent unregisterAgent)
     {
