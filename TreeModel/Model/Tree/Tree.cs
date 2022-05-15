@@ -15,22 +15,27 @@ namespace TreeModel.Model.Tree
 
         public void Tick()
         {
+            //TODO
         }
 
         public void Grow()
         {
+            //TODO
         }
 
         public void ProduceFruits()
         {
+            //TODO
         }
 
         public void Spread()
         {
+            //TODO
         }
 
         public void Die()
         {
+            //TODO
         }
 
         public Resilience resilience { get; set; }

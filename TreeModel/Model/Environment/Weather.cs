@@ -4,7 +4,7 @@ using Mars.Interfaces.Layers;
 
 namespace TreeModel.Model.Environment;
 
-public class Weather : ITerrainLayer
+public class Weather : IWeatherLayer
 {
     public bool InitLayer(LayerInitData layerInitData, RegisterAgent registerAgentHandle = null,
         UnregisterAgent unregisterAgent = null)
@@ -24,28 +24,16 @@ public class Weather : ITerrainLayer
         //TODO
         throw new System.NotImplementedException();
     }
+    public void WeatherForecast()
+    {
+        //TODO
+        throw new System.NotImplementedException();
+    }
 
     public double GetWaterLevel(Position position)
     {
         //TODO
         throw new System.NotImplementedException();
     }
-
-    public double GetSoilNutrients(Position position)
-    {
-        //TODO
-        throw new System.NotImplementedException();
-    }
-
-    public double RemoveWater(Position position, double amount)
-    {
-        //TODO
-        throw new System.NotImplementedException();
-    }
-
-    public double RemoveSoilNutrients(Position position, double amount)
-    {
-        //TODO
-        throw new System.NotImplementedException();
-    }
+    
 }
