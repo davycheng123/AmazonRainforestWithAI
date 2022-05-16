@@ -1,10 +1,13 @@
+using Mars.Components.Layers;
 using Mars.Interfaces.Environments;
 using Mars.Interfaces.Layers;
 
 namespace TreeModel.Model.Environment
 {
-    public interface ITerrainLayer : IDataLayer
+    public interface ITerrainLayer :ILayer
     {
+        // TODO: Think about the function on the TerrainLayer
+        
         /// <returns>
         ///  The remaining water in the soil for a given position
         /// </returns>
@@ -21,7 +24,7 @@ namespace TreeModel.Model.Environment
         /// <returns>
         ///  The amount of removed water
         /// </returns>
-        double RemoveWater(Position position, double amount);
+        double RemoveWater(Position position, int amount);
 
         /// <summary>
         /// Removes nutrients from a position
@@ -29,6 +32,6 @@ namespace TreeModel.Model.Environment
         /// <returns>
         ///  The amount of removed nutrients
         /// </returns>
-        double RemoveSoilNutrients(Position position, double amount);
+        double RemoveSoilNutrients(Position position, int amount);
     }
 }

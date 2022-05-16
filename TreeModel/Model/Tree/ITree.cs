@@ -16,7 +16,7 @@ namespace TreeModel.Model.Tree
         /// Increases the amount of fruits.
         /// Only adult trees produce fruit
         /// </summary>
-        void ProduceFruits();
+        void ProduceFruits(double rate);
 
         /// <summary>
         /// Attempts to spread on to neighboring cells

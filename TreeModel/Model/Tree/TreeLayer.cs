@@ -8,6 +8,7 @@ using Mars.Interfaces.Data;
 using Mars.Interfaces.Environments;
 using Mars.Interfaces.Layers;
 using ServiceStack;
+using TreeModel.Model.Shared;
 
 namespace TreeModel.Model.Tree
 {
@@ -15,12 +16,14 @@ namespace TreeModel.Model.Tree
     {
 
         public SpatialHashEnvironment<Tree> Environment;
+        private IAgentManager agentManager;
+        
 
         public override bool InitLayer(LayerInitData layerInitData, RegisterAgent registerAgentHandle,
             UnregisterAgent unregisterAgent)
         {
             base.InitLayer(layerInitData, registerAgentHandle, unregisterAgent);
-            var agentManager = layerInitData.Container.Resolve<IAgentManager>();
+            agentManager = layerInitData.Container.Resolve<IAgentManager>();
             Environment = new SpatialHashEnvironment<Tree>(Width, Height);
             
             
@@ -30,7 +33,7 @@ namespace TreeModel.Model.Tree
                 {
                     var type = this[x, y];
                     var position = Position.CreatePosition(x,y);
-                    var tree = CreateTree(agentManager, type, position);
+                    var tree = CreateTree( type, position);
                     if ( tree != null)
                     {
                         Environment.Insert(tree);
@@ -42,10 +45,12 @@ namespace TreeModel.Model.Tree
             return true;
         }
         
-        private Tree CreateTree(IAgentManager agentManager,double type, Position position)
+        // We can improve the Parameter: with more Attribute from the Tree
+        public Tree CreateTree(double type, Position position)
         {
             return type switch
             {
+                // TODO: more Species to implement
                 1 => agentManager.Spawn<Tree, TreeLayer>(null, t => t.Position = position).Take(1).First(),
                 _ => null
             };
@@ -133,6 +138,16 @@ namespace TreeModel.Model.Tree
             return -1;
         }
 
+        public State GetState(Position tree)
+        {
+            if (Environment.Entities.Any(t => t.Position.Equals(tree)))
+            {
+                return Environment.Entities.First(t => t.Position.Equals(tree)).state;
+            }
+
+            return State.Nothing;
+        }
+
         public bool IsAlive(Position tree)
         {
             if (Environment.Entities.Any(t => t.Position.Equals(tree)))
@@ -146,6 +161,12 @@ namespace TreeModel.Model.Tree
         public List<Position> ExploreTrees(Position explorer, int distance)
         {
             var result = Environment.Explore(explorer, distance).ToList().Map(t => t.Position);
+            return result;
+        }
+
+        public Tree getTree(Position explorer, int distance)
+        {
+            var result = Environment.Explore(explorer, distance).ToList().First();
             return result;
         }
     }

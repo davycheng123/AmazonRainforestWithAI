@@ -19,6 +19,6 @@ namespace TreeModel.Model.Animal
         /// <returns>
         /// A list that contains all the animals found
         /// </returns>
-        List<Position> ExploreAnimals(Position explorer, int distance);
+        //List<Position> ExploreAnimals(Position explorer, int distance);
     }
 }

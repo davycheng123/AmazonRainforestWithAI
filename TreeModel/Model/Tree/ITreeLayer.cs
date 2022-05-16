@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Mars.Interfaces.Environments;
 using Mars.Interfaces.Layers;
+using TreeModel.Model.Shared;
 
 namespace TreeModel.Model.Tree
 {
@@ -50,6 +51,15 @@ namespace TreeModel.Model.Tree
         /// The age
         /// </returns>
         int GetAge(Position tree);
+
+        /// <summary>
+        /// Inspection of the State of a tree
+        /// </summary>
+        /// <returns>
+        /// The State
+        /// </returns>
+        public State GetState(Position tree);
+
 
         /// <summary>
         /// Inspection whether it is alive or not

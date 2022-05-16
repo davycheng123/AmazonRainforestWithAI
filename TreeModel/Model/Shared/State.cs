@@ -2,5 +2,5 @@ namespace TreeModel.Model.Shared;
 
 public enum State
 {
-    Seedling, Juvenile, Adult, DeadWood
+    Seedling, Juvenile, Adult, DeadWood, Nothing
 }

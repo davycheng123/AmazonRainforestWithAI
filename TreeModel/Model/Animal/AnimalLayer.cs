@@ -1,18 +1,29 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Mars.Common.Core.Collections;
 using Mars.Components.Environments;
 using Mars.Components.Layers;
 using Mars.Core.Data;
+using Mars.Interfaces.Annotations;
 using Mars.Interfaces.Data;
 using Mars.Interfaces.Environments;
 using Mars.Interfaces.Layers;
+using TreeModel.Model.Environment;
+using TreeModel.Model.Tree;
 
 namespace TreeModel.Model.Animal;
 
 public class AnimalLayer : RasterLayer,IAnimalLayer
 {
     public SpatialHashEnvironment<Animal> Environment;
+    
+    
+    // How do it work
+    [PropertyDescription]
+    public TreeLayer TreeLayer { get; set; }
+    
+    public TerrainLayer TerrainLayer { get; set; }
     
     
     public override bool InitLayer(LayerInitData layerInitData, RegisterAgent registerAgentHandle,
@@ -50,15 +61,14 @@ public class AnimalLayer : RasterLayer,IAnimalLayer
         };
     }
 
-    public bool IsAlive(Position tree)
+    public bool IsAlive(Position animal)
     {
-        //TODO
-        throw new System.NotImplementedException();
-    }
+        if (Environment.Entities.Any(t => t.Position.Equals(animal)))
+        {
+            return Environment.Entities.First(t => t.Position.Equals(animal)).alive;
+        }
 
-    public List<Position> ExploreAnimals(Position explorer, int distance)
-    {
-        //TODO
-        throw new System.NotImplementedException();
+        return false;
     }
+    
 }
