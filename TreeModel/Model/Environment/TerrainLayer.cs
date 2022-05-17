@@ -1,101 +1,104 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Mars.Components.Environments;
+using Mars.Common.Core;
+using Mars.Common.Data;
 using Mars.Components.Layers;
-using Mars.Core.Data;
+using Mars.Core.Data.Entities;
 using Mars.Interfaces.Data;
 using Mars.Interfaces.Environments;
 using Mars.Interfaces.Layers;
-using TreeModel.Model.Spot;
+using Mars.Interfaces.Model;
+using ServiceStack;
+using TreeModel.Model.Tree;
 
 namespace TreeModel.Model.Environment;
 
-
-public class TerrainLayer: RasterLayer,ITerrainLayer
+public class TerrainLayer : ITerrainLayer
 {
-    /// <summary>
-    ///     Responsible to create new agents and initialize them with required dependencies
-    /// </summary>
-    public IAgentManager AgentManager { get; private set; }
+    private long _tick=0;
 
-    /// <summary>
-    ///     List from the Nutrient
-    /// </summary>
-
-    public List<Nutrient> _Nutrients;
-    
-    /// <summary>
-    ///     List from the Water
-    /// </summary>
-
-    public List<Water> _Water;
-
-    public override bool InitLayer(LayerInitData layerInitData, RegisterAgent registerAgentHandle,
-        UnregisterAgent unregisterAgentHandle)
+    private Dictionary<Position, double[]> _dict = new Dictionary<Position, double[]>();
+    public  bool InitLayer(LayerInitData layerInitData, RegisterAgent registerAgentHandle = null,
+        UnregisterAgent unregisterAgent = null)
     {
-        var init =  base.InitLayer(layerInitData, registerAgentHandle, unregisterAgentHandle);
-        
-        AgentManager = layerInitData.Container.Resolve<IAgentManager>();
-        _Nutrients= AgentManager.Spawn<Nutrient, TerrainLayer>().ToList();
-        _Water = AgentManager.Spawn<Water, TerrainLayer>().ToList();
-        
-        return init;
-    }
-    
-
-    public double GetWaterLevel(Position water)
-    {
-        var foundWater = _Water.Find(t => t.Position.Equals(water));
-        if (foundWater !=null)
+        var dataEnumerator = layerInitData.LayerInitConfig.Inputs.Import().OfType<StructuredData>().GetEnumerator();
+        while (dataEnumerator.MoveNext())
         {
-            return foundWater.WaterValue;
+            var current = dataEnumerator.Current;
+            if (current == null) continue;
+            var data = current.Data;
+            var pos = new Position(data["x"].To<int>(), data["y"].To<int>());
+            _dict.Add(pos,new double[]{data["waterlevel"].To<double>(),data["nutrients"].To<double>()});
         }
-        return 0;
+        dataEnumerator.Dispose();
+        Console.WriteLine("terrain ok");
+        return true;
     }
 
-    public double GetSoilNutrients(Position nutrien)
+    public long GetCurrentTick()
     {
-        var foundNutrient = _Nutrients.Find(t => t.Position.Equals(nutrien));
-        if (foundNutrient !=null)
-        {
-            return foundNutrient.NutrientValue;
-        }
-
-        return 0;
+        return _tick;
     }
 
-    public double RemoveWater(Position water, int amount)
+    public void SetCurrentTick(long currentStep)
     {
-        var foundWater = _Water.Find(t => t.Position.Equals(water));
-        if (foundWater !=null)
-        {
-            foundWater.WaterValue -= amount;
-            if (foundWater.WaterValue > 0)
-            {
-                return amount;
-            }
-            var amountOfWaterRemoved = amount - Math.Abs(foundWater.WaterValue);
-            foundWater.WaterValue = 0;
-            return amountOfWaterRemoved;
-        }
-        return 0;
+        _tick = currentStep;
     }
 
-    public double RemoveSoilNutrients(Position nutrien, int amount)
+    public double GetWaterLevel(Position position)
     {
-        var foundNutrient = _Nutrients.Find(t => t.Position.Equals(nutrien));
-        if (foundNutrient !=null)
+        if (position==null ||!_dict.ContainsKey(position))
         {
-            foundNutrient.NutrientValue -= amount;
-            if (foundNutrient.NutrientValue > 0)
-            {
-                return amount;
-            }
-            var amountOfWaterRemoved = amount - Math.Abs(foundNutrient.NutrientValue);
-            foundNutrient.NutrientValue = 0;
-            return amountOfWaterRemoved;
+            return -1;
         }
-        return 0;
+        return _dict[position][0];
+    }
+
+    public double GetSoilNutrients(Position position)
+    {
+        if (position==null ||!_dict.ContainsKey(position))
+        {
+            return -1;
+        }
+        return _dict[position][1];
+    }
+
+    public double RemoveWater(Position position, double amount)
+    {
+        if (position==null ||!_dict.ContainsKey(position))
+        {
+            return -1;
+        }
+        var water = _dict[position];
+        water[0] -= amount;
+        if (water[0] > 0) return amount;
+        return amount + water[0];
+    }
+
+    public double RemoveSoilNutrients(Position position, double amount)
+    {
+        if (position==null ||!_dict.ContainsKey(position))
+        {
+            return -1;
+        }
+        var nutrients = _dict[position];
+        nutrients[1] -= amount;
+        if (nutrients[1] > 0) return amount;
+        return amount + nutrients[0];
+    }
+
+    public void AddSoilNutrients(Position position, double amount)
+    {
+        if (position==null ||!_dict.ContainsKey(position)) return;
+        var nutrients = _dict[position];
+        nutrients[1] += amount;
+    }
+
+    public void AddWater(Position position, double amount)
+    {
+        if (position==null ||!_dict.ContainsKey(position)) return;
+        var water = _dict[position];
+        water[0] += amount;
     }
 }

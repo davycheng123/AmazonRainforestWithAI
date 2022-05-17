@@ -24,7 +24,7 @@ namespace TreeModel.Model.Environment
         /// <returns>
         ///  The amount of removed water
         /// </returns>
-        double RemoveWater(Position position, int amount);
+        double RemoveWater(Position position, double amount);
 
         /// <summary>
         /// Removes nutrients from a position
@@ -32,6 +32,6 @@ namespace TreeModel.Model.Environment
         /// <returns>
         ///  The amount of removed nutrients
         /// </returns>
-        double RemoveSoilNutrients(Position position, int amount);
+        double RemoveSoilNutrients(Position position, double amount);
     }
 }

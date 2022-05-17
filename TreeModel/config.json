@@ -13,6 +13,13 @@
   },
   "layers": [
     {
+      "name": "WeatherLayer"
+    },
+    {
+      "name": "TerrainLayer",
+      "file": "Resources/terrain.csv"
+    },
+    {
       "name": "TreeLayer",
       "file": "Resources/trees.csv",
       "dimensionx": 1000,
@@ -20,7 +27,7 @@
     },
     {
       "name": "AnimalLayer",
-      "file": "Resources/trees.csv",
+      "file": "Resources/animals.csv",
       "dimensionx": 1000,
       "dimensiony": 1000
     }
