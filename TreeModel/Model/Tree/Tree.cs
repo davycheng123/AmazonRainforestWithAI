@@ -1,6 +1,7 @@
 using System;
 using System.Linq.Expressions;
 using Mars.Interfaces.Environments;
+using Microsoft.CodeAnalysis.FlowAnalysis;
 using TreeModel.Model.Shared;
 
 namespace TreeModel.Model.Tree
@@ -21,6 +22,9 @@ namespace TreeModel.Model.Tree
         public void Tick()
         {
             Grow();
+            // TODO: tree can get sick?
+            // -> higher chance of infection if nearby trees get sick
+            // Sick();
             
             // Check on Life Point
             if (LifePoints == 0)
@@ -74,6 +78,8 @@ namespace TreeModel.Model.Tree
                 ProduceFruits(fruitRate * rateEffect);
             }
         }
+        
+        
 
         public void ProduceFruits(double rate)
         {
