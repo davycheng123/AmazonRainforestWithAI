@@ -10,7 +10,10 @@ namespace TreeModel.Model.Tree
 
         public void Init(TreeLayer layer)
         {
+            var random = new Random();
             TreeLayer = layer;
+            wood = random.Next(100, 250);
+            resilience = random.Next(8, 12)*0.1;
             //Console.WriteLine(Position);
         }
 
@@ -26,7 +29,7 @@ namespace TreeModel.Model.Tree
                 Die();
             }
             
-            // Check on Wood VAlue
+            // Check on Wood Value
             if (this.wood == 0)
             {
                 TreeLayer.Environment.Remove(this);
@@ -38,34 +41,37 @@ namespace TreeModel.Model.Tree
             // Because every Tree have it own grown rate so we have to calculate the rate of it
             // Affect from enviroment are: Nutrient and Water (which are also affected by weather)
             // We have a formula or sth: rate_effect = (Nutrient + Water )* rate
-            // TODO: Come up with a formular that calculate how all the element affect the Tree
-            var rate = this.growthRate;
+            // TODO: Come up with a formula that calculate how all the element affect the Tree
             // Example
-            double rate_effect = rate - this.resilience;
+            // var rate = this.growthRate;
+            // double rateEffect = rate - this.resilience;
+            var growthRate = 1;
+            var rateEffect = growthRate * this.resilience;
 
 
             // Growing Age
-            this.age += rate;
+            this.age++;
+            var random = new Random();
             // check of it enough age to change State 
-            // TODO: Declare on which age it will change state
-            if (age > 100 && age < 1000)
+            if (age < matureAge)
             {
                 this.state = State.Juvenile;
-                // TODO: Add an amount of wood
-                this.wood += 100;
+                this.wood += random.Next(100, 250);
+                this.wood = (int) (this.wood * rateEffect * 0.8);
             }
 
-            if (age > 1000)
+            if (age > matureAge)
             {
                 this.state = State.Adult;
-                // TODO: Add an amount of wood
-                this.wood += 1000;
+                this.wood += random.Next(100, 250);
+                this.wood = (int) (this.wood * rateEffect);
             }
 
             // Only Adult can produce Fruit
             if (this.state == State.Adult)
             {
-                ProduceFruits(rate_effect);
+                var fruitRate = random.Next(this.fruitRandom[0], this.fruitRandom[1]) * this.fruitConstant;
+                ProduceFruits(fruitRate*rateEffect);
 
             }
         }
@@ -80,9 +86,8 @@ namespace TreeModel.Model.Tree
             switch(this.Specie)
             {
                 case Specie.NutmegTree:
-                    TreeLayer.CreateTree(1, Position.CreatePosition(Position.X + 10, Position.Y + 10)); 
+                    TreeLayer.CreateTree(1, Position.CreatePosition(Position.X + 10, Position.Y + 10));
                     break;
-                    
                 case Specie.PalmTree:
                     TreeLayer.CreateTree(2, Position.CreatePosition(Position.X + 10, Position.Y + 10)); 
                     break;
@@ -90,30 +95,38 @@ namespace TreeModel.Model.Tree
                     TreeLayer.CreateTree(3, Position.CreatePosition(Position.X + 10, Position.Y + 10)); 
                     break;
             }
-            
 
         }
 
         public void Die()
         {
             this.state = State.DeadWood;
-            this.growthRate = 0;
-            // TODO: We can say that the fruits decay over time
-            this.fruit -= 100;
+            // this.growthRate = 0;
+            // fruits decay over time
+            if (this.fruit < 100) 
+                this.fruit = 0;
+            else  
+                this.fruit = (int) (this.fruit * 0.9);
             this.resilience = 0;
         }
 
-        public int resilience { get; set; }
+        public double resilience { get; set; }
         
-        public int growthRate { get; set; }
+        // public int growthRate { get; set; }
         
         public int fruit { get; set; }
         
         public bool alive { get; set; }
 
         public int age { get; set; }
-
-        public int wood { get; set; }
+        
+        public int matureAge { get; set; }
+        
+        public int fruitConstant { get; set; }
+        
+        public int[] fruitRandom { get; set; }
+        
+        public int wood { get; set; }   // in terms of height in centimeter
         
         public Specie Specie { get; set; }
         
