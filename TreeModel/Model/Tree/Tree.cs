@@ -45,34 +45,33 @@ namespace TreeModel.Model.Tree
             // Example
             // var rate = this.growthRate;
             // double rateEffect = rate - this.resilience;
-            var growthRate = 1;
+            double growthRate = 1;
+            growthRate *= DayPerTick / 365.0;
             var rateEffect = growthRate * this.resilience;
 
 
             // Growing Age
-            this.age++;
+            this.age *= growthRate;
             var random = new Random();
+            var woodGrowthPerYear = random.Next(100, 250);  // in centemeter
+            
             // check of it enough age to change State 
             if (age < matureAge)
             {
                 this.state = State.Juvenile;
-                this.wood += random.Next(100, 250);
-                this.wood = (int) (this.wood * rateEffect * 0.8);
-            }
-
-            if (age > matureAge)
+                this.wood += (int) (woodGrowthPerYear * rateEffect * 0.8);
+            } 
+            else
             {
                 this.state = State.Adult;
-                this.wood += random.Next(100, 250);
-                this.wood = (int) (this.wood * rateEffect);
+                this.wood += (int) (woodGrowthPerYear * rateEffect);
             }
 
             // Only Adult can produce Fruit
             if (this.state == State.Adult)
             {
                 var fruitRate = random.Next(this.fruitRandom[0], this.fruitRandom[1]) * this.fruitConstant;
-                ProduceFruits(fruitRate*rateEffect);
-
+                ProduceFruits(fruitRate * rateEffect);
             }
         }
 
@@ -110,6 +109,8 @@ namespace TreeModel.Model.Tree
             this.resilience = 0;
         }
 
+        public int DayPerTick = 1;
+
         public double resilience { get; set; }
         
         // public int growthRate { get; set; }
@@ -118,7 +119,7 @@ namespace TreeModel.Model.Tree
         
         public bool alive { get; set; }
 
-        public int age { get; set; }
+        public double age { get; set; }     // in year
         
         public int matureAge { get; set; }
         

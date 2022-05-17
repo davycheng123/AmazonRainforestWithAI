@@ -151,7 +151,7 @@ namespace TreeModel.Model.Tree
             return -1;
         }
 
-        public int GetAge(Position tree)
+        public double GetAge(Position tree)
         {
             if (Environment.Entities.Any(t => t.Position.Equals(tree)))
             {
