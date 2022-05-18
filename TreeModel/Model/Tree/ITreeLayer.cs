@@ -50,7 +50,7 @@ namespace TreeModel.Model.Tree
         /// <returns>
         /// The age
         /// </returns>
-        int GetAge(Position tree);
+        double GetAge(Position tree);
 
         /// <summary>
         /// Inspection of the State of a tree

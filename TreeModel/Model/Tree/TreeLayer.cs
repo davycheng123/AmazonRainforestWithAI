@@ -48,10 +48,33 @@ namespace TreeModel.Model.Tree
         // We can improve the Parameter: with more Attribute from the Tree
         public Tree CreateTree(double type, Position position)
         {
+            Random rdm = new Random();
             return type switch
             {
-                // TODO: more Species to implement
-                1 => agentManager.Spawn<Tree, TreeLayer>(null, t => t.Position = position).Take(1).First(),
+                1 => agentManager.Spawn<Tree, TreeLayer>(null, t =>
+                {
+                    t.age = 0;
+                    t.Position = position;
+                    t.matureAge = rdm.Next(3, 5);
+                    t.fruitConstant = 2128;
+                    t.fruitRandom = new[] {5, 9};
+                }).Take(1).First(),
+                2 => agentManager.Spawn<Tree, TreeLayer>(null, t =>
+                {
+                    t.age = 0;
+                    t.Position = position;
+                    t.matureAge = rdm.Next(5, 7);
+                    t.fruitConstant = 26250;
+                    t.fruitRandom = new[] {12, 25};
+                }).Take(2).First(),
+                3 => agentManager.Spawn<Tree, TreeLayer>(null, t =>
+                {
+                    t.age = 0;
+                    t.Position = position;
+                    t.matureAge = rdm.Next(18, 22);
+                    t.fruitConstant = 213;
+                    t.fruitRandom = new[] {8, 12};
+                }).Take(3).First(),
                 _ => null
             };
         }
@@ -128,7 +151,7 @@ namespace TreeModel.Model.Tree
             return -1;
         }
 
-        public int GetAge(Position tree)
+        public double GetAge(Position tree)
         {
             if (Environment.Entities.Any(t => t.Position.Equals(tree)))
             {
