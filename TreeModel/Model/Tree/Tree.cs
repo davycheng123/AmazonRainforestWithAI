@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Linq.Expressions;
 using Mars.Interfaces.Environments;
 using Microsoft.CodeAnalysis.FlowAnalysis;
@@ -88,16 +89,21 @@ namespace TreeModel.Model.Tree
 
         public void Spread()
         {
+            
+            var AnimalNearby = TreeLayer.AnimalLayer.ExploreAnimals(Position, 5).Any();
+            var Distance = 10;
+            if (AnimalNearby == true) Distance += 5;
+            
             switch(this.Specie)
             {
                 case Specie.NutmegTree:
-                    TreeLayer.CreateTree(1, Position.CreatePosition(Position.X + 10, Position.Y + 10));
+                    TreeLayer.CreateTree(1, Position.CreatePosition(Position.X + Distance, Position.Y + Distance));
                     break;
                 case Specie.PalmTree:
-                    TreeLayer.CreateTree(2, Position.CreatePosition(Position.X + 10, Position.Y + 10)); 
+                    TreeLayer.CreateTree(2, Position.CreatePosition(Position.X + Distance, Position.Y + Distance)); 
                     break;
                 case Specie.BrazilNutTree:
-                    TreeLayer.CreateTree(3, Position.CreatePosition(Position.X + 10, Position.Y + 10)); 
+                    TreeLayer.CreateTree(3, Position.CreatePosition(Position.X + Distance, Position.Y + Distance)); 
                     break;
             }
 

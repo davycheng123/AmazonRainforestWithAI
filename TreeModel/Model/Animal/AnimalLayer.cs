@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Mars.Common.Core.Collections;
 using Mars.Components.Environments;
 using Mars.Components.Layers;
 using Mars.Core.Data;
@@ -9,6 +8,7 @@ using Mars.Interfaces.Annotations;
 using Mars.Interfaces.Data;
 using Mars.Interfaces.Environments;
 using Mars.Interfaces.Layers;
+using ServiceStack;
 using TreeModel.Model.Environment;
 using TreeModel.Model.Tree;
 
@@ -17,6 +17,7 @@ namespace TreeModel.Model.Animal;
 public class AnimalLayer : RasterLayer,IAnimalLayer
 {
     public SpatialHashEnvironment<Animal> Environment;
+    
     
     
     // How do it work
@@ -71,4 +72,9 @@ public class AnimalLayer : RasterLayer,IAnimalLayer
         return false;
     }
     
+    public List<Position> ExploreAnimals(Position explorer, int distance)
+    {
+        var result = Environment.Explore(explorer, distance).ToList().Map(t => t.Position);
+        return result;
+    }
 }

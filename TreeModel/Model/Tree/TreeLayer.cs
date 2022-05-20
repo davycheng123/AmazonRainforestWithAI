@@ -8,6 +8,7 @@ using Mars.Interfaces.Data;
 using Mars.Interfaces.Environments;
 using Mars.Interfaces.Layers;
 using ServiceStack;
+using TreeModel.Model.Animal;
 using TreeModel.Model.Shared;
 
 namespace TreeModel.Model.Tree
@@ -17,6 +18,8 @@ namespace TreeModel.Model.Tree
 
         public SpatialHashEnvironment<Tree> Environment;
         private IAgentManager agentManager;
+        
+        public AnimalLayer AnimalLayer { get; set; }
         
 
         public override bool InitLayer(LayerInitData layerInitData, RegisterAgent registerAgentHandle,
@@ -78,6 +81,39 @@ namespace TreeModel.Model.Tree
                 _ => null
             };
         }
+
+        public Tree CreatSeeding(double type,Position position)
+        {
+            return type switch
+            {
+                1 => agentManager.Spawn<Tree, TreeLayer>(null, t =>
+                {
+                    t.age = 0;
+                    t.Position = position;
+                    t.matureAge = rdm.Next(3, 5);
+                    t.fruitConstant = 2128;
+                    t.fruitRandom = new[] {5, 9};
+                }).Take(1).First(),
+                2 => agentManager.Spawn<Tree, TreeLayer>(null, t =>
+                {
+                    t.age = 0;
+                    t.Position = position;
+                    t.matureAge = rdm.Next(5, 7);
+                    t.fruitConstant = 26250;
+                    t.fruitRandom = new[] {12, 25};
+                }).Take(2).First(),
+                3 => agentManager.Spawn<Tree, TreeLayer>(null, t =>
+                {
+                    t.age = 0;
+                    t.Position = position;
+                    t.matureAge = rdm.Next(18, 22);
+                    t.fruitConstant = 213;
+                    t.fruitRandom = new[] {8, 12};
+                }).Take(3).First(),
+                _ => null
+            };
+        }
+        
 
         public int GatherWood(Position tree, int amount)
         {
