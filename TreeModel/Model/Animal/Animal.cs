@@ -9,6 +9,7 @@ namespace TreeModel.Model.Animal;
 
 public class Animal : IAnimal<AnimalLayer>
 {
+    // Set Taget for Animals
     private Position _goal;
 
     public void Init(AnimalLayer layer)
@@ -38,7 +39,7 @@ public class Animal : IAnimal<AnimalLayer>
 
     public void Move()
     {
-        Console.WriteLine("Animal Move");
+        //Console.WriteLine("Animal Move");
         Position pos = this.Position;
         var Xpos = pos.X+ new Random().Next(-1,1);
         var Ypos = pos.Y+ new Random().Next(-1,1);
@@ -53,10 +54,10 @@ public class Animal : IAnimal<AnimalLayer>
 
     public void Consume()
     {
-        Console.WriteLine("Animal Eat");
+        //Console.WriteLine("Animal Eat");
         var stateTree = AnimalLayer.TreeLayer.GetState(this.Position);
         // Ask if the tree old enough for Fruits
-        if (stateTree== State.Nothing || stateTree== State.Nothing )
+        if (stateTree== State.Nothing || stateTree== State.Seedling )
         {
             //TODO: We can say if it doesnt have any thing to eat then reduce the life point
             this.LifePoints -= 10;
@@ -99,8 +100,8 @@ public class Animal : IAnimal<AnimalLayer>
     public int PoopRate { get; set; }
     
     public int movement { get; set; }
-    
-    public int LifePoints { get; set; }
+
+    public int LifePoints { get; set; } = 100;
 
     public int TimetoEat { get; set; } = 10;
 
