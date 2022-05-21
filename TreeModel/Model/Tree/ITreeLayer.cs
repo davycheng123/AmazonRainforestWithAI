@@ -45,10 +45,10 @@ namespace TreeModel.Model.Tree
         int FruitLeft(Position tree);
 
         /// <summary>
-        /// Inspection of the age of a tree
+        /// Inspection of the Age of a tree
         /// </summary>
         /// <returns>
-        /// The age
+        /// The Age
         /// </returns>
         double GetAge(Position tree);
 
@@ -62,10 +62,10 @@ namespace TreeModel.Model.Tree
 
 
         /// <summary>
-        /// Inspection whether it is alive or not
+        /// Inspection whether it is Alive or not
         /// </summary>
         /// <returns>
-        /// true if alive, false otherwise
+        /// true if Alive, false otherwise
         /// </returns>
         bool IsAlive(Position tree);
 

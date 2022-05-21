@@ -6,10 +6,10 @@ namespace TreeModel.Model.Animal
     public interface IAnimalLayer
     {
         /// <summary>
-        /// Inspection whether it is alive or not
+        /// Inspection whether it is Alive or not
         /// </summary>
         /// <returns>
-        /// true if alive, false otherwise
+        /// true if Alive, false otherwise
         /// </returns>
         bool IsAlive(Position tree);
 
@@ -19,6 +19,6 @@ namespace TreeModel.Model.Animal
         /// <returns>
         /// A list that contains all the animals found
         /// </returns>
-        //List<Position> ExploreAnimals(Position explorer, int distance);
+        List<Position> ExploreAnimals(Position explorer, int distance);
     }
 }

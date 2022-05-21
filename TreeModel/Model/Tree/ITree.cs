@@ -4,10 +4,10 @@ using Mars.Interfaces.Layers;
 
 namespace TreeModel.Model.Tree
 {
-    public interface ITree<in T> : IAgent<T>,IPositionable where T : ILayer
+    public interface ITree<in T> : IAgent<T>, IPositionable where T : ILayer
     {
         /// <summary>
-        /// Increases wood mass, age and resilience.
+        /// Increases wood mass, Age and resilience.
         /// This action reduces nutrients in the soil
         /// </summary>
         void Grow();

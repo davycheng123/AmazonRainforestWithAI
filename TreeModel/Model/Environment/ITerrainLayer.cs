@@ -1,13 +1,12 @@
-using Mars.Components.Layers;
 using Mars.Interfaces.Environments;
 using Mars.Interfaces.Layers;
 
 namespace TreeModel.Model.Environment
 {
-    public interface ITerrainLayer :ILayer
+    public interface ITerrainLayer : ILayer
     {
         // TODO: Think about the function on the TerrainLayer
-        
+
         /// <returns>
         ///  The remaining water in the soil for a given position
         /// </returns>

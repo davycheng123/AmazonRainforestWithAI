@@ -1,7 +1,7 @@
 {
   "globals": {
     "startTime": "2022-01-01T10:00:00.000Z",
-    "endTime": "2022-12-31T10:30:00.000Z",
+    "endTime": "2024-01-01T10:00:00.000Z",
     "deltaT": 1,
     "deltaTUnit": "days",
     "output": "csv",
@@ -17,29 +17,29 @@
     },
     {
       "name": "TerrainLayer",
-      "file": "Resources/terrain.csv"
+      "file": "Resources/terrain_small.csv"
     },
     {
       "name": "TreeLayer",
-      "file": "Resources/trees.csv",
-      "dimensionx": 1000,
-      "dimensiony": 1000
+      "file": "Resources/trees_small.csv",
+      "dimensionx": 100,
+      "dimensiony": 100
     },
     {
       "name": "AnimalLayer",
-      "file": "Resources/animals.csv",
-      "dimensionx": 1000,
-      "dimensiony": 1000
+      "file": "Resources/animals_small.csv",
+      "dimensionx": 100,
+      "dimensiony": 100
     }
   ],
   "agents": [
     {
       "name": "Tree",
-      "count": 10000
+      "count": 400
     },
     {
       "name": "Animal",
-      "count": 10000
+      "count": 150
     }
   ]
 }
