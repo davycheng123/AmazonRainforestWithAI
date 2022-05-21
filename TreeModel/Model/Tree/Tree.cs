@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Linq;
 using Mars.Interfaces.Environments;
 using TreeModel.Model.Shared;
@@ -13,16 +14,32 @@ namespace TreeModel.Model.Tree
             TreeLayer = layer;
             wood = random.Next(100, 250);
             resilience = random.Next(8, 12) * 0.1;
+            LifePoints = 1000;
             //Console.WriteLine(Position);
         }
 
 
         public void Tick()
         {
-            Grow();
+            
             // TODO: tree can get sick?
             // -> higher chance of infection if nearby trees get sick
             // Sick();
+            
+            // Change State
+            if (age < matureAge)
+            {
+                state = State.Juvenile;
+            }
+            
+            if (age > matureAge)
+            {
+                state = State.Adult;
+            }
+            //Console.Write(state);
+            Grow();
+
+            Spread();
 
             // Check on Life Point
             if (LifePoints == 0)
@@ -47,34 +64,47 @@ namespace TreeModel.Model.Tree
             // Example
             // var rate = this.growthRate;
             // double rateEffect = rate - this.resilience;
+            
+            //Console.Write("Growing");
             double growthRate = 1;
             growthRate *= DayPerTick / 365.0;
             var rateEffect = growthRate * resilience;
 
+            // Increase the Life point 
 
+            var nutrient = TreeLayer.TerrainLayer.GetSoilNutrients(Position);
+            var water = TreeLayer.TerrainLayer.GetWaterLevel(Position);
+
+            if (nutrient != -1) LifePoints += (int)nutrient;
+            
+            if (water != -1) LifePoints += (int)water;
+
+            LifePoints += 100;
+            
+            
             // Growing Age
-            age *= growthRate;
+            age += 0.1;
             var random = new Random();
             var woodGrowthPerYear = random.Next(100, 250); // in centemeter
 
-            // check of it enough Age to change State 
-            if (age < matureAge)
+            // check Age to change wood 
+            switch(state)
             {
-                state = State.Juvenile;
-                wood += (int) (woodGrowthPerYear * rateEffect * 0.8);
-            }
-            else
-            {
-                state = State.Adult;
-                wood += (int) (woodGrowthPerYear * rateEffect);
+                case State.Seedling:break;
+                case State.Juvenile:
+                    wood += (int) (woodGrowthPerYear * rateEffect * 0.8);
+                    break;
+                case State.Adult:
+                    wood += (int) (woodGrowthPerYear * rateEffect);
+
+                    // Only Adult can produce Fruit
+                    var fruitRate = random.Next(fruitRandom[0], fruitRandom[1]) * fruitConstant;
+                    ProduceFruits(fruitRate * rateEffect);
+                    break;
+                default:
+                    break;
             }
 
-            // Only Adult can produce Fruit
-            if (state == State.Adult)
-            {
-                var fruitRate = random.Next(fruitRandom[0], fruitRandom[1]) * fruitConstant;
-                ProduceFruits(fruitRate * rateEffect);
-            }
         }
 
 
@@ -88,17 +118,17 @@ namespace TreeModel.Model.Tree
             var animalNearby = TreeLayer.AnimalLayer.ExploreAnimals(Position, 5).Any();
             var distance = 10;
             if (animalNearby) distance += 5;
-
+            
             switch (Specie)
             {
                 case Specie.NutmegTree:
-                    TreeLayer.CreateTree(1, Position.CreatePosition(Position.X + distance, Position.Y + distance));
+                    TreeLayer.CreatSeeding(1, Position.CreatePosition(Position.X + distance, Position.Y + distance));
                     break;
                 case Specie.PalmTree:
-                    TreeLayer.CreateTree(2, Position.CreatePosition(Position.X + distance, Position.Y + distance));
+                    TreeLayer.CreatSeeding(2, Position.CreatePosition(Position.X + distance, Position.Y + distance));
                     break;
                 case Specie.BrazilNutTree:
-                    TreeLayer.CreateTree(3, Position.CreatePosition(Position.X + distance, Position.Y + distance));
+                    TreeLayer.CreatSeeding(3, Position.CreatePosition(Position.X + distance, Position.Y + distance));
                     break;
             }
         }

@@ -13,7 +13,7 @@ public class Animal : IAnimal<AnimalLayer>
     public void Init(AnimalLayer layer)
     {
         AnimalLayer = layer;
-        Age = new Random().Next(0, 365 * 20);
+        //mAge = new Random().Next(0, 365 * 20);
         Alive = true;
     }
 
@@ -30,17 +30,17 @@ public class Animal : IAnimal<AnimalLayer>
 
         _adultTree = AnimalLayer.TreeLayer.ExploreTrees(Position, 10)
             .FindAll(t => AnimalLayer.TreeLayer.GetState(t) == State.Adult);
-
+        
         if (Energy > 55 && Age > 5 * 365)
         {
             var child = AnimalLayer.CreateAnimal(1, Position);
             child.Age = 0;
-            Energy -= 50;
+            Energy -= 20;
             LifePoints -= 20;
         }
 
         Move();
-        if (Energy < 30)
+        if (Energy < 100)
         {
             Consume();
         }
@@ -76,6 +76,7 @@ public class Animal : IAnimal<AnimalLayer>
 
     public void Consume()
     {
+        //Console.Write("Eatringg");
         // Ask if the tree enough Fruits
         var fruitLeft = AnimalLayer.TreeLayer.FruitLeft(Position); 
         if (fruitLeft <= 0)
@@ -87,7 +88,8 @@ public class Animal : IAnimal<AnimalLayer>
         var fruitNeed = (100 - Energy) / 20;
 
         // Gather Fruit from a tree, lower the Fruits count
-        Energy += (AnimalLayer.TreeLayer.GatherFruit(Position, fruitNeed)) * 20;
+        Energy += (AnimalLayer.TreeLayer.GatherFruit(Position, fruitNeed)) * 20 + 90;
+        LifePoints += 10;
         _seed = AnimalLayer.TreeLayer.GetSpecie(Position);
     }
 
@@ -103,6 +105,8 @@ public class Animal : IAnimal<AnimalLayer>
     {
         AnimalLayer.TerrainLayer.AddSoilNutrients(Position, 500);
         AnimalLayer.RemoveAnimal(this);
+        AnimalLayer.TerrainLayer.AddSoilNutrients(Position,100);
+
     }
 
     public AnimalLayer AnimalLayer { get; set; }
@@ -113,11 +117,11 @@ public class Animal : IAnimal<AnimalLayer>
 
     public int PoopRate { get; set; }
 
-    public int Movement { get; set; } = 5;
+    public int Movement { get; set; } 
 
-    public int LifePoints { get; set; } = 100;
+    public int LifePoints { get; set; } 
 
-    public int Energy { get; set; } = 100;
+    public int Energy { get; set; } 
 
     public int Age { get; set; }
 

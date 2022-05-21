@@ -57,7 +57,16 @@ public class AnimalLayer : RasterLayer, IAnimalLayer
     {
         var animal = type switch
         {
-            1 => _agentManager.Spawn<Animal, AnimalLayer>(null, t => t.Position = position).Take(1).First(),
+            1 => _agentManager.Spawn<Animal, AnimalLayer>(null, t =>
+            {
+                t.Position = position;
+                t.Energy = 300;
+                t.Movement = 5;
+                t.LifePoints = 500;
+                t.PoopRate = 5;
+                t.Age = new Random().Next(0, 365 * 20);
+
+            }).Take(1).First(),
             _ => null
         };
         if (animal != null)
