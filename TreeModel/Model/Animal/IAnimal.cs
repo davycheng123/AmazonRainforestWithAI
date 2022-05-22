@@ -1,6 +1,7 @@
 using Mars.Interfaces.Agents;
 using Mars.Interfaces.Environments;
 using Mars.Interfaces.Layers;
+using TreeModel.Model.Shared;
 
 namespace TreeModel.Model.Animal
 {
@@ -19,7 +20,7 @@ namespace TreeModel.Model.Animal
         /// <summary>
         /// Fertilizes the soil and helps the spread of trees
         /// </summary>
-        void Poop();
+        void Poop(Specie seed);
 
         /// <summary>
         /// This kills the animal but it's corpse remains until it decays

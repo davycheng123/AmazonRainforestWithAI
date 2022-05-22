@@ -93,7 +93,7 @@ namespace TreeModel.Model.Tree
         {
             if (Environment.Entities.Any(t => t.Position.Equals(position))) return null;
             var tree = CreateTree(type, position);
-            if (tree != null) tree.age = 0;
+            if (tree != null) tree.age = 1;
             return tree;
         }
 

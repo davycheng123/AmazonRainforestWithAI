@@ -3,6 +3,7 @@ using System.Linq;
 using Mars.Interfaces.Environments;
 using TreeModel.Model.Shared;
 using System.Collections.Generic;
+using Mars.Common.Core.Random;
 
 namespace TreeModel.Model.Animal;
 
@@ -15,36 +16,44 @@ public class Animal : IAnimal<AnimalLayer>
         AnimalLayer = layer;
         //mAge = new Random().Next(0, 365 * 20);
         Alive = true;
+        countPoop = 0;
     }
 
     public void Tick()
     {
         if (!Alive) return;
 
+        // Die when too Old or out of Lifepoint
         if (LifePoints < 1 || Age > (365 * 20))
         {
             Alive = false;
             Die();
             return;
         }
-
+        
+        // Find Tree in The Radios
         _adultTree = AnimalLayer.TreeLayer.ExploreTrees(Position, 10)
             .FindAll(t => AnimalLayer.TreeLayer.GetState(t) == State.Adult);
         
-        if (Energy > 55 && Age > 5 * 365)
+        // Spawning Child when enough Energy and Old enough
+        
+        if (Energy > 200 && Age > 15 * 365)
         {
-            var child = AnimalLayer.CreateAnimal(1, Position);
-            child.Age = 0;
+            var child = AnimalLayer.CreateAnimal(2, Position);
             Energy -= 20;
             LifePoints -= 20;
         }
-
+        
+        
         Move();
-        if (Energy < 100)
+        
+        // Eat if Energy too low
+        if (Energy < 150)
         {
             Consume();
         }
 
+        // Energy too low affect life point
         if (Energy <= 0)
         {
             Energy = 0;
@@ -56,7 +65,8 @@ public class Animal : IAnimal<AnimalLayer>
 
     public void Move()
     {
-        if (_adultTree.Count > 0 && Energy < 30)
+        //if (_adultTree.Count > 0 && Energy < 30)
+        if (_adultTree.Count > 0)    
         {
             AnimalLayer.Environment.MoveTo(this, _adultTree.First(), Movement);
         }
@@ -76,29 +86,51 @@ public class Animal : IAnimal<AnimalLayer>
 
     public void Consume()
     {
-        //Console.Write("Eatringg");
         // Ask if the tree enough Fruits
         var fruitLeft = AnimalLayer.TreeLayer.FruitLeft(Position); 
         if (fruitLeft <= 0)
         {
+            //Console.Write("No find food");
             return;
         }
 
+        //Console.Write(fruitLeft);
         // Needed Fruit for full health
         var fruitNeed = (100 - Energy) / 20;
-
+        
         // Gather Fruit from a tree, lower the Fruits count
         Energy += (AnimalLayer.TreeLayer.GatherFruit(Position, fruitNeed)) * 20 + 90;
         LifePoints += 10;
         _seed = AnimalLayer.TreeLayer.GetSpecie(Position);
+        
+        countPoop += 1;
+        if (countPoop == 10)
+        {
+            Poop(_seed);
+        }
+        
     }
+    
 
     private Specie _seed;
+    private int countPoop;
 
-    public void Poop()
+    public void Poop(Specie seed)
     {
         AnimalLayer.TerrainLayer.AddSoilNutrients(Position, 10);
-        AnimalLayer.TreeLayer.CreatSeeding((double) _seed, Position);
+        
+        var rnd = new Random();
+        if (rnd.Next(100) % 7 == 0)
+        {
+            Console.Write("Add Seeding");
+            // Seeding tree
+            // Seeding is radom 
+            // TODO: Add Location spawn tree
+            AnimalLayer.TreeLayer.CreatSeeding((double) seed, 
+                new Position(Position.X+ RandomHelper.Random.Next(AnimalLayer.TreeLayer.Width),Position.Y+ RandomHelper.Random.Next(AnimalLayer.TreeLayer.Height)));
+        }
+        
+        
     }
 
     public void Die()

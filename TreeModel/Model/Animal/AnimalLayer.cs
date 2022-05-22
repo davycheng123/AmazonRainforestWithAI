@@ -60,11 +60,21 @@ public class AnimalLayer : RasterLayer, IAnimalLayer
             1 => _agentManager.Spawn<Animal, AnimalLayer>(null, t =>
             {
                 t.Position = position;
-                t.Energy = 300;
+                t.Energy = 150;
                 t.Movement = 5;
-                t.LifePoints = 500;
+                t.LifePoints = 100;
                 t.PoopRate = 5;
                 t.Age = new Random().Next(0, 365 * 20);
+
+            }).Take(1).First(),
+             2 => _agentManager.Spawn<Animal, AnimalLayer>(null, t =>
+            {
+                t.Position = position;
+                t.Energy = 100;
+                t.Movement = 5;
+                t.LifePoints = 80;
+                t.PoopRate = 5;
+                t.Age = 0;
 
             }).Take(1).First(),
             _ => null
@@ -92,4 +102,6 @@ public class AnimalLayer : RasterLayer, IAnimalLayer
         var result = Environment.Explore(explorer, distance).ToList().Map(t => t.Position);
         return result;
     }
+
+    
 }
