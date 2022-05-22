@@ -81,8 +81,10 @@ namespace TreeModel.Model.Tree
                 }).Take(3).First(),
                 _ => null
             };
+
             if (tree != null)
             {
+                Console.Write("Add Tree");
                 Environment.Insert(tree);
             }
 
@@ -91,9 +93,14 @@ namespace TreeModel.Model.Tree
 
         public Tree CreatSeeding(double type, Position position)
         {
-            if (Environment.Entities.Any(t => t.Position.Equals(position))) return null;
+            if (Environment.Entities.Any(t => t.Position.Equals(position)))
+            {
+                return null;
+            }
+            
             var tree = CreateTree(type, position);
             if (tree != null) tree.age = 1;
+            // Console.Write("Succesfully create Tree");
             return tree;
         }
 

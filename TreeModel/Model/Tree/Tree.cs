@@ -39,7 +39,7 @@ namespace TreeModel.Model.Tree
             //Console.Write(state);
             Grow();
 
-            //Spread();
+            Spread();
 
             // Check on Life Point
             if (LifePoints == 0)

@@ -120,14 +120,23 @@ public class Animal : IAnimal<AnimalLayer>
         AnimalLayer.TerrainLayer.AddSoilNutrients(Position, 10);
         
         var rnd = new Random();
-        if (rnd.Next(100) % 7 == 0)
+        if (rnd.Next(100) % 2 == 0)
         {
-            Console.Write("Add Seeding");
-            // Seeding tree
-            // Seeding is radom 
-            // TODO: Add Location spawn tree
-            AnimalLayer.TreeLayer.CreatSeeding((double) seed, 
-                new Position(Position.X+ RandomHelper.Random.Next(AnimalLayer.TreeLayer.Width),Position.Y+ RandomHelper.Random.Next(AnimalLayer.TreeLayer.Height)));
+            var x = RandomHelper.Random.Next(AnimalLayer.TreeLayer.Width);
+            var y = RandomHelper.Random.Next(AnimalLayer.TreeLayer.Height);
+            switch (seed)
+            {
+                case Specie.NutmegTree:
+                    AnimalLayer.TreeLayer.CreatSeeding(1, Position.CreatePosition(Position.X + x, Position.Y + y));
+                    break;
+                case Specie.PalmTree:
+                    AnimalLayer.TreeLayer.CreatSeeding(2, Position.CreatePosition(Position.X + x, Position.Y + y));
+                    break;
+                case Specie.BrazilNutTree:
+                    AnimalLayer.TreeLayer.CreatSeeding(3, Position.CreatePosition(Position.X + x, Position.Y + y));
+                    break;
+            }
+            
         }
         
         
