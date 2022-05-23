@@ -19,6 +19,7 @@ namespace TreeModel.Model.Tree
         public SpatialHashEnvironment<Tree> Environment;
         private IAgentManager agentManager;
 
+
         public AnimalLayer AnimalLayer { get; set; }
         public TerrainLayer TerrainLayer { get; set; }
 
@@ -84,7 +85,6 @@ namespace TreeModel.Model.Tree
 
             if (tree != null)
             {
-                Console.Write("Add Tree");
                 Environment.Insert(tree);
             }
 

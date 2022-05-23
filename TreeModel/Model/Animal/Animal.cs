@@ -37,7 +37,7 @@ public class Animal : IAnimal<AnimalLayer>
         
         // Spawning Child when enough Energy and Old enough
         
-        if (Energy > 200 && Age > 15 * 365)
+        if (Energy > 110 && Age > 15 * 365)
         {
             var child = AnimalLayer.CreateAnimal(2, Position);
             Energy -= 20;
@@ -48,7 +48,7 @@ public class Animal : IAnimal<AnimalLayer>
         Move();
         
         // Eat if Energy too low
-        if (Energy < 150)
+        if (Energy < 80)
         {
             Consume();
         }
@@ -87,54 +87,56 @@ public class Animal : IAnimal<AnimalLayer>
     public void Consume()
     {
         // Ask if the tree enough Fruits
-        var fruitLeft = AnimalLayer.TreeLayer.FruitLeft(Position); 
-        if (fruitLeft <= 0)
-        {
-            //Console.Write("No find food");
-            return;
-        }
+        var fruitLeft = AnimalLayer.TreeLayer.FruitLeft(Position);
 
-        //Console.Write(fruitLeft);
-        // Needed Fruit for full health
-        var fruitNeed = (100 - Energy) / 20;
-        
-        // Gather Fruit from a tree, lower the Fruits count
-        Energy += (AnimalLayer.TreeLayer.GatherFruit(Position, fruitNeed)) * 20 + 90;
-        LifePoints += 10;
-        _seed = AnimalLayer.TreeLayer.GetSpecie(Position);
-        
-        countPoop += 1;
-        if (countPoop == 10)
+        if (fruitLeft > 0)
         {
-            Poop(_seed);
+            // Needed Fruit for full health
+            var fruitNeed = (100 - Energy) / 20;
+        
+            // Gather Fruit from a tree, lower the Fruits count
+            Energy += (AnimalLayer.TreeLayer.GatherFruit(Position, fruitNeed)) * 20 + 10;
+            LifePoints += 10;
+            
+            // POop Spread Tree
+            _seed = AnimalLayer.TreeLayer.GetSpecie(Position);
+            countPoop ++;
+
+            if (countPoop %7 == 0)
+            {
+                Console.Write("Poop");
+                Poop(_seed);
+            }
         }
         
     }
-    
-
     private Specie _seed;
     private int countPoop;
 
     public void Poop(Specie seed)
     {
         AnimalLayer.TerrainLayer.AddSoilNutrients(Position, 10);
-        
         var rnd = new Random();
         if (rnd.Next(100) % 2 == 0)
         {
             var x = RandomHelper.Random.Next(AnimalLayer.TreeLayer.Width);
             var y = RandomHelper.Random.Next(AnimalLayer.TreeLayer.Height);
+            
             switch (seed)
-            {
+            { 
                 case Specie.NutmegTree:
+                    //Console.Write("**Seed are 1**");
                     AnimalLayer.TreeLayer.CreatSeeding(1, Position.CreatePosition(Position.X + x, Position.Y + y));
                     break;
                 case Specie.PalmTree:
+                    //Console.Write("**Seed are 2**");
                     AnimalLayer.TreeLayer.CreatSeeding(2, Position.CreatePosition(Position.X + x, Position.Y + y));
                     break;
                 case Specie.BrazilNutTree:
+                    //Console.Write("**Seed are 3**");
                     AnimalLayer.TreeLayer.CreatSeeding(3, Position.CreatePosition(Position.X + x, Position.Y + y));
                     break;
+
             }
             
         }

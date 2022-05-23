@@ -60,7 +60,7 @@ public class AnimalLayer : RasterLayer, IAnimalLayer
             1 => _agentManager.Spawn<Animal, AnimalLayer>(null, t =>
             {
                 t.Position = position;
-                t.Energy = 150;
+                t.Energy = 100;
                 t.Movement = 5;
                 t.LifePoints = 100;
                 t.PoopRate = 5;
