@@ -14,7 +14,7 @@ using TreeModel.Model.Shared;
 
 namespace TreeModel.Model.Tree
 {
-    public class TreeLayer : RasterLayer, ITreeLayer
+    public class TreeLayer : RasterLayer, ITreeLayer, ISteppedActiveLayer
     {
         public SpatialHashEnvironment<Tree> Environment;
         private IAgentManager agentManager;
@@ -221,6 +221,21 @@ namespace TreeModel.Model.Tree
         {
             var result = Environment.Explore(explorer, distance).ToList().Map(t => t.Position);
             return result;
+        }
+
+        public void Tick()
+        {
+           
+        }
+
+        public void PreTick()
+        {
+           
+        }
+
+        public void PostTick()
+        {
+           
         }
     }
 }
