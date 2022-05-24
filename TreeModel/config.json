@@ -30,6 +30,12 @@
       "file": "Resources/animals_small.csv",
       "dimensionx": 100,
       "dimensiony": 100
+    },
+    {
+      "name": "HumanLayer",
+      "file": "Resources/humans_small.csv",
+      "dimensionx": 100,
+      "dimensiony": 100
     }
   ],
   "agents": [

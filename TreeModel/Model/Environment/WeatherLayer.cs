@@ -91,7 +91,8 @@ public class WeatherLayer : IWeatherLayer, ISteppedActiveLayer
         {
             var trees= TreeLayer.Environment.Entities.Count();
             var animals = TreeLayer.AnimalLayer.Environment.Entities.Count();
-            Console.WriteLine(GetCurrentTick()/365 +". year passed, animals: "+animals+" trees: "+trees);
+            var humans = TreeLayer.HumanLayer.Environment.Entities.Count();
+            Console.WriteLine(GetCurrentTick()/365 +". year passed, animals: "+animals+" trees: "+trees +"humans" +humans);
         }
     }
 }

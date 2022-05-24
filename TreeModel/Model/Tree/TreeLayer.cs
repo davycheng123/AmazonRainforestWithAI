@@ -10,11 +10,12 @@ using Mars.Interfaces.Layers;
 using ServiceStack;
 using TreeModel.Model.Animal;
 using TreeModel.Model.Environment;
+using TreeModel.Model.Human;
 using TreeModel.Model.Shared;
 
 namespace TreeModel.Model.Tree
 {
-    public class TreeLayer : RasterLayer, ITreeLayer, ISteppedActiveLayer
+    public class TreeLayer : RasterLayer, ITreeLayer
     {
         public SpatialHashEnvironment<Tree> Environment;
         private IAgentManager agentManager;
@@ -22,7 +23,8 @@ namespace TreeModel.Model.Tree
 
         public AnimalLayer AnimalLayer { get; set; }
         public TerrainLayer TerrainLayer { get; set; }
-
+    
+        public HumanLayer HumanLayer { get; set; }
 
         public override bool InitLayer(LayerInitData layerInitData, RegisterAgent registerAgentHandle,
             UnregisterAgent unregisterAgent)
@@ -228,14 +230,6 @@ namespace TreeModel.Model.Tree
            
         }
 
-        public void PreTick()
-        {
-           
-        }
-
-        public void PostTick()
-        {
-           
-        }
+      
     }
 }
