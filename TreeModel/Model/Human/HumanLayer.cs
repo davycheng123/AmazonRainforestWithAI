@@ -9,7 +9,7 @@ using Mars.Interfaces.Environments;
 using Mars.Interfaces.Layers;
 using TreeModel.Model.Environment;
 using TreeModel.Model.Tree;
-
+/*
 namespace TreeModel.Model.Human;
 
 public class HumanLayer: RasterLayer, IHumanLayer
@@ -76,3 +76,4 @@ public class HumanLayer: RasterLayer, IHumanLayer
     }
 
 }
+*/

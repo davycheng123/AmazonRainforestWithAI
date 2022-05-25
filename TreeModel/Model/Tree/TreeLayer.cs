@@ -12,8 +12,9 @@ using TreeModel.Model.Animal;
 using TreeModel.Model.Environment;
 using TreeModel.Model.Human;
 using TreeModel.Model.Shared;
-
+/*
 namespace TreeModel.Model.Tree
+
 {
     public class TreeLayer : RasterLayer, ITreeLayer
     {
@@ -233,3 +234,4 @@ namespace TreeModel.Model.Tree
       
     }
 }
+*/

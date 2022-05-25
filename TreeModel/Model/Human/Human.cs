@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Mars.Interfaces.Environments;
-
+/*
 namespace TreeModel.Model.Human;
 
 public class Human: IHuman<HumanLayer>, IPositionable
@@ -100,3 +100,4 @@ public class Human: IHuman<HumanLayer>, IPositionable
     // identifies the agent
     public Guid ID { get; set; }
 }
+*/

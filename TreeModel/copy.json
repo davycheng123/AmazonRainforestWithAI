@@ -31,6 +31,12 @@
       "file": "Resources/terrain_small.csv"
     },
     {
+      "name": "TreeLayer",
+      "file": "Resources/trees_small.csv",
+      "dimensionx": 100,
+      "dimensiony": 100
+    },
+    {
       "name": "ForestLayer",
       "file": "Resources/trees_small.csv",
       "dimensionx": 100,
@@ -44,13 +50,28 @@
         }
       ]
     }
+    ,
+    {
+      "name": "AnimalLayer",
+      "file": "Resources/animals_small.csv",
+      "dimensionx": 100,
+      "dimensiony": 100
+    },
+    {
+      "name": "HumanLayer",
+      "file": "Resources/humans_small.csv",
+      "dimensionx": 100,
+      "dimensiony": 100
+    }
   ],
   "agents": [
     {
-      "name": "Tree"
+      "name": "Tree",
+      "count": 400
     },
     {
-      "name": "Animal"
+      "name": "Animal",
+      "count": 150
     }
   ]
 }

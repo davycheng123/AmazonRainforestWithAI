@@ -12,7 +12,7 @@ using Mars.Interfaces.Layers;
 using ServiceStack;
 using TreeModel.Model.Environment;
 using TreeModel.Model.Tree;
-
+/*
 namespace TreeModel.Model.Animal;
 
 public class AnimalLayer : RasterLayer, IAnimalLayer
@@ -41,7 +41,7 @@ public class AnimalLayer : RasterLayer, IAnimalLayer
             {
                 var type = this[x, y];
                 var position = Position.CreatePosition(x, y);
-                CreateAnimal(type, position);
+                //CreateAnimal(type, position);
             }
         }
 
@@ -53,6 +53,7 @@ public class AnimalLayer : RasterLayer, IAnimalLayer
     {
         Environment.Remove(animal);
     }
+    
     public Animal CreateAnimal(double type, Position position)
     {
         var animal = type switch
@@ -105,3 +106,4 @@ public class AnimalLayer : RasterLayer, IAnimalLayer
 
     
 }
+*/

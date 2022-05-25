@@ -4,7 +4,7 @@ using Mars.Interfaces.Data;
 using Mars.Interfaces.Layers;
 using TreeModel.Model.Animal;
 using TreeModel.Model.Tree;
-
+/*
 namespace TreeModel.Model.Environment;
 
 public class WeatherLayer : IWeatherLayer, ISteppedActiveLayer
@@ -96,3 +96,4 @@ public class WeatherLayer : IWeatherLayer, ISteppedActiveLayer
         }
     }
 }
+*/

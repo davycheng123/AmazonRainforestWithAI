@@ -4,22 +4,24 @@ using Mars.Interfaces.Environments;
 using TreeModel.Model.Shared;
 using System.Collections.Generic;
 using Mars.Common.Core.Random;
+using TreeModel.Model.Environment;
 
 namespace TreeModel.Model.Animal;
 
-public class Animal : IAnimal<AnimalLayer>
+public class Animal : IAnimal<ForestLayer>
 {
     private List<Position> _adultTree;
 
-    public void Init(AnimalLayer layer)
+    public void Init(ForestLayer layer)
     {
-        AnimalLayer = layer;
+        //AnimalLayer = layer;
         //mAge = new Random().Next(0, 365 * 20);
         Alive = true;
     }
 
     public void Tick()
     {
+        /*
         if (!Alive) return;
 
         // Die when too Old or out of Lifepoint
@@ -60,8 +62,9 @@ public class Animal : IAnimal<AnimalLayer>
         }
 
         Age++;
+        */
     }
-
+/*
     public void Move()
     {
         //if (_adultTree.Count > 0 && Energy < 30)
@@ -150,7 +153,7 @@ public class Animal : IAnimal<AnimalLayer>
     }
 
     public AnimalLayer AnimalLayer { get; set; }
-
+*/
     public bool Alive { get; set; }
 
     public Position Position { get; set; }
@@ -163,8 +166,35 @@ public class Animal : IAnimal<AnimalLayer>
 
     public int Energy { get; set; } 
 
+    public string Name { get; set; }
+    public int AmountToSpawn { get; set; }
+    public int MaxAge { get; set; }
+    public int MatureAge { get; set; }
+    public double MovementSpeed { get; set; }
+    public double ConsumptionRate { get; set;}
+    public bool Herbivore { get; set; }
+    public bool Carnivore { get; set; }
     public int Age { get; set; }
 
     // identifies the agent
     public Guid ID { get; set; }
+    public void Move()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Consume()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Poop(Specie seed)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Die()
+    {
+        throw new NotImplementedException();
+    }
 }
