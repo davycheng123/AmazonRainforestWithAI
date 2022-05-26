@@ -31,6 +31,10 @@
       "file": "Resources/terrain_small.csv"
     },
     {
+      "name": "InitialPositionLayer",
+      "file": "Resources/tree_map_small.csv"
+    },
+    {
       "name": "ForestLayer",
       "file": "Resources/trees_small.csv",
       "dimensionx": 100,

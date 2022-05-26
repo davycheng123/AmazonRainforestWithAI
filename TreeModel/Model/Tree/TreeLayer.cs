@@ -16,7 +16,7 @@ using TreeModel.Model.Shared;
 namespace TreeModel.Model.Tree
 
 {
-    public class TreeLayer : RasterLayer, ITreeLayer
+    public class ForestLayer : RasterLayer, ITreeLayer
     {
         public SpatialHashEnvironment<Tree> Environment;
         private IAgentManager agentManager;
@@ -56,7 +56,7 @@ namespace TreeModel.Model.Tree
             var tree = type switch
             {
                 //PalmTree max Age 30
-                1 => agentManager.Spawn<Tree, TreeLayer>(null, t =>
+                1 => agentManager.Spawn<Tree, ForestLayer>(null, t =>
                 {
                     t.age = rdm.Next(31);
                     t.Position = position;
@@ -66,7 +66,7 @@ namespace TreeModel.Model.Tree
                 }).Take(1).First(),
 
                 // BrazilNutTree max Age 500
-                2 => agentManager.Spawn<Tree, TreeLayer>(null, t =>
+                2 => agentManager.Spawn<Tree, ForestLayer>(null, t =>
                 {
                     t.age = rdm.Next(501);
                     t.Position = position;
@@ -75,7 +75,7 @@ namespace TreeModel.Model.Tree
                     t.fruitRandom = new[] {12, 25};
                 }).Take(2).First(),
                 // NutmegTree max Age 60
-                3 => agentManager.Spawn<Tree, TreeLayer>(null, t =>
+                3 => agentManager.Spawn<Tree, ForestLayer>(null, t =>
                 {
                     t.age = rdm.Next(61);
                     t.Position = position;

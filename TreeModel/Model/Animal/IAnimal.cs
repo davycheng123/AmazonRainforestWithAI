@@ -20,7 +20,7 @@ namespace TreeModel.Model.Animal
         /// <summary>
         /// Fertilizes the soil and helps the spread of trees
         /// </summary>
-        void Poop(Specie seed);
+        void Poop();
 
         /// <summary>
         /// This kills the animal but it's corpse remains until it decays

@@ -21,7 +21,7 @@ public class AnimalLayer : RasterLayer, IAnimalLayer
 
 
     // How do it work
-    [PropertyDescription] public TreeLayer TreeLayer { get; set; }
+    [PropertyDescription] public ForestLayer ForestLayer { get; set; }
 
     public TerrainLayer TerrainLayer { get; set; }
 

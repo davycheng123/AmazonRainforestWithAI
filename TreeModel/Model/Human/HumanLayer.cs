@@ -18,7 +18,7 @@ public class HumanLayer: RasterLayer, IHumanLayer
 
     // How do it work
     [PropertyDescription]
-    public TreeLayer TreeLayer { get; set; }
+    public ForestLayer ForestLayer { get; set; }
     
     public TerrainLayer TerrainLayer { get; set; }
     

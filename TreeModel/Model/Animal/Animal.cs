@@ -1,9 +1,6 @@
 using System;
-using System.Linq;
 using Mars.Interfaces.Environments;
-using TreeModel.Model.Shared;
 using System.Collections.Generic;
-using Mars.Common.Core.Random;
 using TreeModel.Model.Environment;
 
 namespace TreeModel.Model.Animal;
@@ -11,16 +8,24 @@ namespace TreeModel.Model.Animal;
 public class Animal : IAnimal<ForestLayer>
 {
     private List<Position> _adultTree;
-
+    public ForestLayer ForestLayer { get; set; }
+    public TerrainLayer TerrainLayer { get; set; }
     public void Init(ForestLayer layer)
     {
-        //AnimalLayer = layer;
-        //mAge = new Random().Next(0, 365 * 20);
+        ForestLayer = layer;
         Alive = true;
     }
 
     public void Tick()
     {
+        if(!Alive) return;
+        Move();
+        if(Energy < 50) Consume();
+        Poop();
+        Age++;
+        if (Energy < 1) LifePoints--;
+        Energy -= 1 * ConsumptionRate;
+        if (Age > MaxAge || LifePoints < 1) Die();
         /*
         if (!Alive) return;
 
@@ -33,8 +38,8 @@ public class Animal : IAnimal<ForestLayer>
         }
         
         // Find Tree in The Radios
-        _adultTree = AnimalLayer.TreeLayer.ExploreTrees(Position, 10)
-            .FindAll(t => AnimalLayer.TreeLayer.GetState(t) == State.Adult);
+        _adultTree = AnimalLayer.ForestLayer.ExploreTrees(Position, 10)
+            .FindAll(t => AnimalLayer.ForestLayer.GetState(t) == State.Adult);
         
         // Spawning Child when enough Energy and Old enough
         
@@ -89,7 +94,7 @@ public class Animal : IAnimal<ForestLayer>
     public void Consume()
     {
         // Ask if the tree enough Fruits
-        var fruitLeft = AnimalLayer.TreeLayer.FruitLeft(Position);
+        var fruitLeft = AnimalLayer.ForestLayer.FruitLeft(Position);
 
         if (fruitLeft > 0)
         {
@@ -97,12 +102,12 @@ public class Animal : IAnimal<ForestLayer>
             var fruitNeed = (100 - Energy) / 20;
         
             // Gather Fruit from a tree, lower the Fruits count
-            Energy += (AnimalLayer.TreeLayer.GatherFruit(Position, fruitNeed)) * 20 + 10;
+            Energy += (AnimalLayer.ForestLayer.GatherFruit(Position, fruitNeed)) * 20 + 10;
             LifePoints += 10;
                 
             cnt ++;
             // POop Spread Tree
-            _seed = AnimalLayer.TreeLayer.GetSpecie(Position);
+            _seed = AnimalLayer.ForestLayer.GetSpecie(Position);
             Poop(_seed);
             
         }
@@ -117,22 +122,22 @@ public class Animal : IAnimal<ForestLayer>
         var rnd = new Random();
         if (rnd.Next(100*PoopRate) % 69 == 0)
         {
-            var x = RandomHelper.Random.Next(AnimalLayer.TreeLayer.Width);
-            var y = RandomHelper.Random.Next(AnimalLayer.TreeLayer.Height);
+            var x = RandomHelper.Random.Next(AnimalLayer.ForestLayer.Width);
+            var y = RandomHelper.Random.Next(AnimalLayer.ForestLayer.Height);
             
             switch (seed)
             { 
                 case Specie.NutmegTree:
                     //Console.Write("**Seed are 1**");
-                    AnimalLayer.TreeLayer.CreatSeeding(1, Position.CreatePosition(Position.X + x, Position.Y + y));
+                    AnimalLayer.ForestLayer.CreatSeeding(1, Position.CreatePosition(Position.X + x, Position.Y + y));
                     break;
                 case Specie.PalmTree:
                     //Console.Write("**Seed are 2**");
-                    AnimalLayer.TreeLayer.CreatSeeding(2, Position.CreatePosition(Position.X + x, Position.Y + y));
+                    AnimalLayer.ForestLayer.CreatSeeding(2, Position.CreatePosition(Position.X + x, Position.Y + y));
                     break;
                 case Specie.BrazilNutTree:
                     //Console.Write("**Seed are 3**");
-                    AnimalLayer.TreeLayer.CreatSeeding(3, Position.CreatePosition(Position.X + x, Position.Y + y));
+                    AnimalLayer.ForestLayer.CreatSeeding(3, Position.CreatePosition(Position.X + x, Position.Y + y));
                     break;
 
             }
@@ -157,44 +162,43 @@ public class Animal : IAnimal<ForestLayer>
     public bool Alive { get; set; }
 
     public Position Position { get; set; }
+    
+    //100% LifePoints & Energy 
+    public int LifePoints = 100;
+    public double Energy = 100;
 
-    public int PoopRate { get; set; }
-
-    public int Movement { get; set; } 
-
-    public int LifePoints { get; set; } 
-
-    public int Energy { get; set; } 
-
+    // name = type, example: name = Monkey
     public string Name { get; set; }
-    public int AmountToSpawn { get; set; }
+    public int Age { get; set; }
     public int MaxAge { get; set; }
     public int MatureAge { get; set; }
+    
+    // rates
     public double MovementSpeed { get; set; }
     public double ConsumptionRate { get; set;}
+    
+    // herbivore = eats plants/fruits
     public bool Herbivore { get; set; }
+    
+    //carnivore = eats meat/other animals
     public bool Carnivore { get; set; }
-    public int Age { get; set; }
+    
 
     // identifies the agent
     public Guid ID { get; set; }
     public void Move()
     {
-        throw new NotImplementedException();
     }
 
     public void Consume()
     {
-        throw new NotImplementedException();
     }
 
-    public void Poop(Specie seed)
+    public void Poop()
     {
-        throw new NotImplementedException();
     }
 
     public void Die()
     {
-        throw new NotImplementedException();
     }
 }

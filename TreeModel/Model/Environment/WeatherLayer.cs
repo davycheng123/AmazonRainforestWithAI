@@ -2,16 +2,13 @@ using System;
 using System.Linq;
 using Mars.Interfaces.Data;
 using Mars.Interfaces.Layers;
-using TreeModel.Model.Animal;
-using TreeModel.Model.Tree;
-/*
 namespace TreeModel.Model.Environment;
 
 public class WeatherLayer : IWeatherLayer, ISteppedActiveLayer
 {
     private long _tick = 0;
     public TerrainLayer TerrainLayer { get; set; }
-    public TreeLayer TreeLayer { get; set; }
+    public ForestLayer ForestLayer { get; set; }
 
     //chances
     public double RainfallChance { get; set; } = 0.7;
@@ -50,9 +47,9 @@ public class WeatherLayer : IWeatherLayer, ISteppedActiveLayer
         if (Burning || Storming)
         {
             //TODO set trees on fire or have the trees check if burning is true and set them self on fire per chance
-            foreach (var tree in TreeLayer.Environment.Entities)
+            foreach (var tree in ForestLayer.TreeEnvironment.Entities)
             {
-                if (rnd.NextDouble() > 0.8) TreeLayer.HurtTree(tree.Position, rnd.Next(0, 100));
+                //if (rnd.NextDouble() > 0.8) ForestLayer.HurtTree(tree.Position, rnd.Next(0, 100));
             }
         }
     }
@@ -85,15 +82,12 @@ public class WeatherLayer : IWeatherLayer, ISteppedActiveLayer
     }
 
     public void PostTick()
-    {
-        //Do nothing
-        if (GetCurrentTick() % 365 == 0)
-        {
-            var trees= TreeLayer.Environment.Entities.Count();
-            var animals = TreeLayer.AnimalLayer.Environment.Entities.Count();
-            var humans = TreeLayer.HumanLayer.Environment.Entities.Count();
-            Console.WriteLine(GetCurrentTick()/365 +". year passed, animals: "+animals+" trees: "+trees +"humans" +humans);
-        }
+    { 
+        if(GetCurrentTick() % 365 != 0) return;
+        
+        var trees= ForestLayer.TreeEnvironment.Entities.Count();
+        var animals = ForestLayer.AnimalEnvironment.Entities.Count();
+        var humans = ForestLayer.HumanEnvironment.Entities.Count();
+        Console.WriteLine(GetCurrentTick()/365 +". year passed, animals: "+animals+" trees: "+trees +" humans: " +humans);
     }
 }
-*/

@@ -1,18 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Metadata;
-using Mars.Common.Data;
 using Mars.Components.Environments;
 using Mars.Components.Layers;
-using Mars.Components.Services;
 using Mars.Core.Data;
-using Mars.Interfaces;
 using Mars.Interfaces.Annotations;
 using Mars.Interfaces.Data;
 using Mars.Interfaces.Environments;
 using Mars.Interfaces.Layers;
-using Mars.Interfaces.Model;
+using ServiceStack;
 using TreeModel.Model.Animal;
 using TreeModel.Model.Tree;
 
@@ -22,7 +18,7 @@ public class ForestLayer : RasterLayer
 {
     public SpatialHashEnvironment<Tree.Tree> TreeEnvironment;
     public SpatialHashEnvironment<Animal.Animal> AnimalEnvironment;
-    //public SpatialHashEnvironment<Human.Human> HumanEnvironment;
+    public SpatialHashEnvironment<Human.Human> HumanEnvironment;
 
     private IAgentManager _agentManager;
     private IEntityManager _entityManager;
@@ -35,7 +31,8 @@ public class ForestLayer : RasterLayer
     
     [PropertyDescription]
     public List<string> HumanTypes { get; set; }
-    
+
+    public InitialPositionLayer InitialPositionLayer { get; set; }
     public override bool InitLayer(LayerInitData layerInitData, RegisterAgent registerAgentHandle, UnregisterAgent unregisterAgent)
     {
         base.InitLayer(layerInitData, registerAgentHandle, unregisterAgent);
@@ -43,7 +40,8 @@ public class ForestLayer : RasterLayer
         _entityManager = layerInitData.Container.Resolve<IEntityManager>();
         TreeEnvironment = new SpatialHashEnvironment<Tree.Tree>(Width, Height);
         AnimalEnvironment = new SpatialHashEnvironment<Animal.Animal>(Width, Height);
-        //HumanEnvironment = new SpatialHashEnvironment<Human.Human>(Width, Height);
+        HumanEnvironment = new SpatialHashEnvironment<Human.Human>(Width, Height);
+        
         SpawnAnimals();
         SpawnTrees();
         SpawnHumans();
@@ -65,11 +63,19 @@ public class ForestLayer : RasterLayer
                 a.Herbivore = at.Herbivore;
                 a.Name = at.Name;
                 a.ConsumptionRate = at.ConsumptionRate;
-                a.MatureAge= at.MatureAge;
-                a.MaxAge = at.MaxAge;
-                var x = rnd.Next(AnimalEnvironment.DimensionX);
-                var y = rnd.Next(AnimalEnvironment.DimensionY);
-                a.Position = Position.CreatePosition(x,y);
+                a.MatureAge= at.MatureAge * 365;
+                a.MaxAge = at.MaxAge * 365;
+                if (InitialPositionLayer.SpawnPositionsAnimal.IsEmpty())
+                {
+                    var x = rnd.Next(AnimalEnvironment.DimensionX);
+                    var y = rnd.Next(AnimalEnvironment.DimensionY);
+                    a.Position = Position.CreatePosition(x, y);
+                }
+                else
+                {
+                    a.Position = InitialPositionLayer.SpawnPositionsAnimal[0];
+                    InitialPositionLayer.SpawnPositionsAnimal.RemoveAt(0);
+                }
             }).Take(at.AmountToSpawn);
             foreach (var animal in animals)
             {
@@ -94,11 +100,19 @@ public class ForestLayer : RasterLayer
                 t.ProductionRate = tt.ProductionRate;
                 t.ConsumptionRate = tt.ConsumptionRate;
                 t.GrowRate = tt.GrowRate;
-                t.MatureAge = tt.MaxAge;
-                t.MaxAge = tt.MaxAge;
-                var x = rnd.Next(TreeEnvironment.DimensionX);
-                var y = rnd.Next(TreeEnvironment.DimensionY);
-                t.Position = Position.CreatePosition(x,y);
+                t.MatureAge = tt.MatureAge * 365;
+                t.MaxAge = tt.MaxAge * 365;
+                if (InitialPositionLayer.SpawnPositionsTree.IsEmpty())
+                {
+                    var x = rnd.Next(TreeEnvironment.DimensionX);
+                    var y = rnd.Next(TreeEnvironment.DimensionY);
+                    t.Position = Position.CreatePosition(x, y);
+                }
+                else
+                {
+                    t.Position = InitialPositionLayer.SpawnPositionsTree[0];
+                    InitialPositionLayer.SpawnPositionsTree.RemoveAt(0);
+                }
             }).Take(tt.AmountToSpawn);
             foreach (var tree in trees)
             {

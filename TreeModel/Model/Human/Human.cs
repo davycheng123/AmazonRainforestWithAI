@@ -2,29 +2,30 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Mars.Interfaces.Environments;
-/*
+using TreeModel.Model.Environment;
+
 namespace TreeModel.Model.Human;
 
-public class Human: IHuman<HumanLayer>, IPositionable
+public class Human: IHuman<ForestLayer>, IPositionable
 {
     //private Position _goal;
 
-    public void Init(HumanLayer layer)
+    public void Init(ForestLayer layer)
     {
-        HumanLayer = layer;
+        ForestLayer = layer;
     }
 
     public void Tick()
     {
         //TODO
-        var listPosition = HumanLayer.TreeLayer.ExploreTrees(this.Position,10);
+        //var listPosition = ForestLayer.ExploreTrees(this.Position,10);
         
         Move();
         // if()
-        CutDownTree(listPosition);
+        //CutDownTree(listPosition);
         Poop();
-        FruitHarvest(listPosition);
-        PlantingTree(listPosition);
+        //FruitHarvest(listPosition);
+        //PlantingTree(listPosition);
     }
 
     public void Move()
@@ -41,9 +42,9 @@ public class Human: IHuman<HumanLayer>, IPositionable
     {
         foreach (var tree in positions)
         {
-            WoodStorage -= HumanLayer.TreeLayer.GatherWood(tree, WoodStorage);
+            //WoodStorage -= ForestLayer.GatherWood(tree, WoodStorage);
             //TODO
-            // HumanLayer.TreeLayer.HurtTree(tree,);
+            // HumanLayer.ForestLayer.HurtTree(tree,);
         }
     }
 
@@ -59,11 +60,11 @@ public class Human: IHuman<HumanLayer>, IPositionable
     {
         foreach (var treePosition in positions)
         {
-            HumanLayer.TreeLayer.GatherFruit(treePosition, 10);
+            //ForestLayer.GatherFruit(treePosition, 10);
             // reduce Fruit from tree 
-            var tree = HumanLayer.TreeLayer.ExploreTrees(this.Position, 10);
-            HumanLayer.TreeLayer.GatherFruit(tree.First(),10);
-            HumanLayer.TreeLayer.HurtTree(tree.First(),10);
+            //var tree =ForestLayer.ExploreTrees(this.Position, 10);
+            //ForestLayer.GatherFruit(tree.First(),10);
+            //ForestLayer.HurtTree(tree.First(),10);
  
 
         }
@@ -75,12 +76,12 @@ public class Human: IHuman<HumanLayer>, IPositionable
         {
             // randomly select a tree type
             Random treeType = new Random();
-            HumanLayer.TreeLayer.CreateTree(treeType.Next(1,4), treePosition);
+            //ForestLayer.CreateTree(treeType.Next(1,4), treePosition);
         }
 
     }
     
-    public HumanLayer HumanLayer { get; set; }
+    public ForestLayer ForestLayer { get; set; }
     
     public bool alive { get; set; }
     
@@ -100,4 +101,3 @@ public class Human: IHuman<HumanLayer>, IPositionable
     // identifies the agent
     public Guid ID { get; set; }
 }
-*/

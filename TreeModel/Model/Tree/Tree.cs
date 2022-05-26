@@ -47,7 +47,7 @@ namespace TreeModel.Model.Tree
 public void Init(ForestLayer layer)
 {
     var random = new Random();
-    TreeLayer = layer;
+    ForestLayer = layer;
     wood = random.Next(100, 250);
     resilience = random.Next(8, 12) * 0.1;
     LifePoints = 1000;
@@ -87,7 +87,7 @@ public void Tick()
     // Check on Wood Value
     if (wood == 0)
     {
-        TreeLayer.Environment.Remove(this);
+        ForestLayer.Environment.Remove(this);
     }
 }
 
@@ -108,8 +108,8 @@ public void Grow()
 
     // Increase the Life point 
 
-    var nutrient = TreeLayer.TerrainLayer.GetSoilNutrients(Position);
-    var water = TreeLayer.TerrainLayer.GetWaterLevel(Position);
+    var nutrient = ForestLayer.TerrainLayer.GetSoilNutrients(Position);
+    var water = ForestLayer.TerrainLayer.GetWaterLevel(Position);
 
     if (nutrient != -1) LifePoints += (int)nutrient;
     
@@ -151,20 +151,20 @@ public void ProduceFruits(double rate)
 
 public void Spread()
 {
-    var animalNearby = TreeLayer.AnimalLayer.ExploreAnimals(Position, 5).Any();
+    var animalNearby = ForestLayer.AnimalLayer.ExploreAnimals(Position, 5).Any();
     var distance = 10;
     if (animalNearby) distance += 5;
     
     switch (Specie)
     {
         case Specie.NutmegTree:
-            TreeLayer.CreatSeeding(1, Position.CreatePosition(Position.X + distance, Position.Y + distance));
+            ForestLayer.CreatSeeding(1, Position.CreatePosition(Position.X + distance, Position.Y + distance));
             break;
         case Specie.PalmTree:
-            TreeLayer.CreatSeeding(2, Position.CreatePosition(Position.X + distance, Position.Y + distance));
+            ForestLayer.CreatSeeding(2, Position.CreatePosition(Position.X + distance, Position.Y + distance));
             break;
         case Specie.BrazilNutTree:
-            TreeLayer.CreatSeeding(3, Position.CreatePosition(Position.X + distance, Position.Y + distance));
+            ForestLayer.CreatSeeding(3, Position.CreatePosition(Position.X + distance, Position.Y + distance));
             break;
     }
 }
@@ -205,7 +205,7 @@ public Specie Specie { get; set; }
 
 public State state { get; set; }
 
-public TreeLayer TreeLayer { get; private set; }
+public ForestLayer ForestLayer { get; private set; }
 public Position Position { get; set; }
 
 public int LifePoints { get; set; }
