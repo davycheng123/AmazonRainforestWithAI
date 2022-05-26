@@ -23,6 +23,7 @@ namespace TreeModel
             description.AddLayer<InitialPositionLayer>();
             description.AddLayer<ForestLayer>();
             description.AddAgent<Animal, ForestLayer>();
+            description.AddAgent<Tree, ForestLayer>();
             description.AddLayer<TerrainLayer>();
             description.AddLayer<WeatherLayer>();
             //description.AddLayer<ForestLayer>();
