@@ -7,7 +7,7 @@ namespace TreeModel.Model.Tree
     public interface ITree<in T> : IAgent<T>, IPositionable where T : ILayer
     {
         /// <summary>
-        /// Increases wood mass, Age and resilience.
+        /// Increases wood mass, Age and Fruits.
         /// This action reduces nutrients in the soil
         /// </summary>
         void Grow();
@@ -16,7 +16,7 @@ namespace TreeModel.Model.Tree
         /// Increases the amount of fruits.
         /// Only adult trees produce fruit
         /// </summary>
-        void ProduceFruits(double rate);
+        void ProduceFruits();
 
         /// <summary>
         /// Attempts to spread on to neighboring cells

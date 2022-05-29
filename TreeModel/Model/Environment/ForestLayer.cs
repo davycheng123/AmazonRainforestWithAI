@@ -10,6 +10,7 @@ using Mars.Interfaces.Environments;
 using Mars.Interfaces.Layers;
 using ServiceStack;
 using TreeModel.Model.Animal;
+using TreeModel.Model.Shared;
 using TreeModel.Model.Tree;
 
 namespace TreeModel.Model.Environment;
@@ -19,10 +20,12 @@ public class ForestLayer : RasterLayer
     public SpatialHashEnvironment<Tree.Tree> TreeEnvironment;
     public SpatialHashEnvironment<Animal.Animal> AnimalEnvironment;
     public SpatialHashEnvironment<Human.Human> HumanEnvironment;
-
-    private IAgentManager _agentManager;
-    private IEntityManager _entityManager;
+    //
+    public TerrainLayer TerrainLayer { get; set; }
+    public IAgentManager _agentManager;
+    public IEntityManager _entityManager;
     
+
     [PropertyDescription]
     public List<string> AnimalTypes { get; set; }
     
@@ -86,7 +89,8 @@ public class ForestLayer : RasterLayer
         Console.WriteLine(AnimalEnvironment.Entities.Count()+" animals inserted");
     }
 
-    private void SpawnTrees()
+    //___________________________________________________________________________________________________________________________________
+    public void SpawnTrees()
     {
         
         var types = new List<TreeType>();
@@ -125,5 +129,114 @@ public class ForestLayer : RasterLayer
 
     }
     
+     public double GatherWood(Position tree, double amount)
+        {
+            if (TreeEnvironment.Entities.Any(t => t.Position.Equals(tree)))
+            {
+                var foundTree = TreeEnvironment.Entities.First(t => t.Position.Equals(tree));
+                foundTree.Wood -= amount;
+                if (foundTree.Wood > 0)
+                {
+                    return amount;
+                }
+
+                var amountOfCutWood = amount - Math.Abs(foundTree.Wood);
+                foundTree.Wood = 0;
+                return amountOfCutWood;
+            }
+
+            return 0;
+        }
+
+        public double GatherFruit(Position tree, double amount)
+        {
+            if (TreeEnvironment.Entities.Any(t => t.Position.Equals(tree)))
+            {
+                var foundTree = TreeEnvironment.Entities.First(t => t.Position.Equals(tree));
+                foundTree.Fruit -= amount;
+                if (foundTree.Fruit > 0)
+                {
+                    return amount;
+                }
+
+                var amountOfCutFruit = amount - Math.Abs(foundTree.Fruit);
+                foundTree.Fruit = 0;
+                return amountOfCutFruit;
+            }
+
+            return 0;
+        }
+
+        public void HurtTree(Position tree, double amount)
+        {
+            if (TreeEnvironment.Entities.Any(t => t.Position.Equals(tree)))
+            {
+                var foundTree = TreeEnvironment.Entities.First(t => t.Position.Equals(tree));
+                foundTree.LifePoints -= amount;
+                if (foundTree.LifePoints < 1)
+                {
+                    foundTree.LifePoints = 0;
+                    foundTree.Die();
+                }
+            }
+        }
+
+        public double WoodLeft(Position tree)
+        {
+            if (TreeEnvironment.Entities.Any(t => t.Position.Equals(tree)))
+            {
+                return TreeEnvironment.Entities.First(t => t.Position.Equals(tree)).Wood;
+            }
+
+            return -1;
+        }
+
+        public double FruitLeft(Position tree)
+        {
+            if (TreeEnvironment.Entities.Any(t => t.Position.Equals(tree)))
+            {
+                return TreeEnvironment.Entities.First(t => t.Position.Equals(tree)).Fruit;
+            }
+
+            return -1;
+        }
+
+        public int GetAge(Position tree)
+        {
+            if (TreeEnvironment.Entities.Any(t => t.Position.Equals(tree)))
+            {
+                return TreeEnvironment.Entities.First(t => t.Position.Equals(tree)).Age;
+            }
+
+            return -1;
+        }
+
+        public State GetState(Position tree)
+        {
+            if (TreeEnvironment.Entities.Any(t => t.Position.Equals(tree)))
+            {
+                return TreeEnvironment.Entities.First(t => t.Position.Equals(tree)).State;
+            }
+
+            return State.Nothing;
+        }
+        
+
+        public bool IsAlive(Position tree)
+        {
+            if (TreeEnvironment.Entities.Any(t => t.Position.Equals(tree)))
+            {
+                return TreeEnvironment.Entities.First(t => t.Position.Equals(tree)).Alive;
+            }
+
+            return false;
+        }
+
+        public List<Position> ExploreTrees(Position explorer, int distance)
+        {
+            var result = TreeEnvironment.Explore(explorer, distance).ToList().Map(t => t.Position);
+            return result;
+        }
+//_______________________________________________________________________________________________________________________
     private void SpawnHumans(){}
 }

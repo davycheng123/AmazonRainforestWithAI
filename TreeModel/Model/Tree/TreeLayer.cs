@@ -86,10 +86,7 @@ namespace TreeModel.Model.Tree
                 _ => null
             };
 
-            if (tree != null)
-            {
-                Environment.Insert(tree);
-            }
+            
 
             return tree;
         }

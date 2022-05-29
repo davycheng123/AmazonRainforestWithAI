@@ -1,8 +1,9 @@
 using System;
 using Mars.Interfaces.Environments;
 using System.Collections.Generic;
+using System.Linq;
 using TreeModel.Model.Environment;
-
+using ServiceStack;
 namespace TreeModel.Model.Animal;
 
 public class Animal : IAnimal<ForestLayer>
@@ -17,7 +18,10 @@ public class Animal : IAnimal<ForestLayer>
     }
 
     public void Tick()
-    {
+    {   
+        // Every Tick the Animal will try to find tree 
+        _adultTree = ForestLayer.TreeEnvironment.Explore(Position, 10).ToList().Map(t => t.Position);
+        
         if(!Alive) return;
         Move();
         if(Energy < 50) Consume();
@@ -188,10 +192,45 @@ public class Animal : IAnimal<ForestLayer>
     public Guid ID { get; set; }
     public void Move()
     {
+        //if (_adultTree.Count > 0 && Energy < 30)
+        if (_adultTree.Count > 0)    
+        {
+            ForestLayer.AnimalEnvironment.MoveTo(this, _adultTree.First(), MovementSpeed);
+        }
+        else
+        {
+            var rnd = new Random();
+            var x = ForestLayer.AnimalEnvironment.DimensionX;
+            x = rnd.Next(x);
+            var y = ForestLayer.AnimalEnvironment.DimensionY;
+            y = rnd.Next(y);
+            ForestLayer.AnimalEnvironment.MoveTo(this, new Position(x, y), MovementSpeed);
+        }
+
+        // Lower the Energy when Moving
+        Energy--;
     }
 
     public void Consume()
     {
+        // Ask if the tree enough Fruits
+        var fruitLeft = ForestLayer.FruitLeft(Position);
+
+        if (fruitLeft > 0)
+        {
+            // Needed Fruit for full health
+            var fruitNeed = (100 - Energy) / 20;
+        
+            // Gather Fruit from a tree, lower the Fruits count
+            Energy += 1 * (ForestLayer.GatherFruit(Position, ConsumptionRate)) ;
+            LifePoints += 10;
+            
+            /*
+            // Poop Spread Tree
+            _seed = AnimalLayer.ForestLayer.GetSpecie(Position);
+            Poop(_seed);
+            */
+        }
     }
 
     public void Poop()
