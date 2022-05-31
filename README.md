@@ -34,8 +34,8 @@
 #Date (14.06.2022)
 - The Model should be visualized with result from the simulation
 - The Research question will be conducted with enough Data
-## Research Question(s):
 
+## Research Question(s):
 - What role do humans play in the growth of the rainforest? Would it make a big difference for the forest if humans were not included in the calculation?
 - What happens in the event of a fire or other rare event? Does that have a big impact on the rainforest? Because the temperatures in the forest are pretty much the same all year round.
 
@@ -54,23 +54,34 @@ Simulation is still on developing process
 - The State of the Trees are showed but not on our desired location. 
 - We are trying to work with real location for the next step
 
+Current visualization state can be seen with the 2 simulation samples in .html format. 
+- 2 year simulation is viewable and settings changeable.
+- 8 year simulation is only viewable.
+(It might take some time to load in the browser, be patient)
+
 ## How to Use
 - You can change the Parameter for the Tree, Animal, and Human in the .csv File so that you can either include all or just the tree and the animal
 - The Result of the Tree will be showed in the /bin folder. 
 - You will the a Tree.csv File there
-- On the Kepler Site the Tree.csv File will be added for the input. 
-- And you should see the Progress of the Tree through out each Tick will is Day in our Simulation
+- On the Kepler Site the Tree.csv File shall be added for the input. 
+- Set the long and lang param, to the x and y column. For proper visualization, set the colorization by the state of the tree.
+- With a filter set to the datetime you should see the Progress of the Tree growth throughout each Tick which is a Day in our Simulation
 
 ## Usage
 - Finding a better balance for growing and consuming trees
 - Knowing what specific factors that contribute most to the demolition of rainforests
 
 ## Support
-- Email: dinh.nguyen@haw-hamburg.de#
-- add your Email hier
+- Email:  dinh.nguyen@haw-hamburg.de
+          asger.krabbe@haw-hamburg.de
+          anne.krillenberger@haw-hamburg.de
+          erik.weisgerberg@haw-hamburg.de
+          yu.cheng@haw-hamburg.de
 
 ## Roadmap
-- add here the TimeTable
+View png named below.
+![Tree simulation roadmap.png](./Tree simulation roadmap.png)
+
 
 ## Authors and acknowledgment
 Show your appreciation to those who have contributed to the project.
