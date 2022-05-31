@@ -20,10 +20,20 @@
   + Details UML about the Communication between Classes. 
   + Simulation Method is chosen and been research for the implemented. 
 
-## 2 Week Goal:
+- 3.Version(31.05.2022):
+  + We have finish the Model with Tree, Animal, Human, Terrain and the Weather.
+  + We can see the interaction between them and see the affect of it. 
+  + Simulation are prepared, not running state yet
+  
+## 2 Week Goal: 
+#Date (31.05.2022)
 - All of the Agent and Layer are implemented, up and running.
 - Simulation are implemented
 - Finish small things like: Comment on Code and working on the documentation
+
+#Date (14.06.2022)
+- The Model should be visualized with result from the simulation
+- The Research question will be conducted with enough Data
 ## Research Question(s):
 
 - What role do humans play in the growth of the rainforest? Would it make a big difference for the forest if humans were not included in the calculation?
@@ -40,7 +50,16 @@ This would include finding a better balance for growing and dying trees. When we
 
 ## Visuals
 Simulation is still on developing process
+- We have made some progress with kepler
+- The State of the Trees are showed but not on our desired location. 
+- We are trying to work with real location for the next step
 
+## How to Use
+- You can change the Parameter for the Tree, Animal, and Human in the .csv File so that you can either include all or just the tree and the animal
+- The Result of the Tree will be showed in the /bin folder. 
+- You will the a Tree.csv File there
+- On the Kepler Site the Tree.csv File will be added for the input. 
+- And you should see the Progress of the Tree through out each Tick will is Day in our Simulation
 
 ## Usage
 - Finding a better balance for growing and consuming trees
