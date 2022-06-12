@@ -48,7 +48,7 @@ public class ForestLayer : RasterLayer
         
         SpawnAnimals();
         SpawnTrees();
-        SpawnHumans();
+        //SpawnHumans();
         return true;
     }
 
@@ -179,7 +179,7 @@ public class ForestLayer : RasterLayer
         {
             // If it not free
             // RandomeSpot
-            newpos = newRandomeLocation();
+            newpos = NewRandomeLocation();
         }
         else
         {
@@ -322,16 +322,7 @@ public class ForestLayer : RasterLayer
             return result;
         }
         
-        public void SpreadTree(Position position)
-        {
-            // Tree hat a bool nowSpread, it will be asked every Tick ob it can spread
-            if (TreeEnvironment.Entities.Any(t => t.Position.Equals(position)))
-            {
-                var foundTree = TreeEnvironment.Entities.First(t => t.Position.Equals(position));
-                foundTree.nowSpread  = true;
-               
-            }
-        }
+        
 //_______________________________________________________________________________________________________________________
     private void SpawnHumans()
     {
@@ -340,7 +331,7 @@ public class ForestLayer : RasterLayer
         Random rnd = new Random();
         types.ForEach(ht =>
         {
-            var humanns =_agentManager.Spawn<Human.Human,ForestLayer>(null, h =>
+            var humans =_agentManager.Spawn<Human.Human,ForestLayer>(null, h =>
             {
                 h.Alive = ht.Alive;
                 h.Movement = ht.Movement;
@@ -361,17 +352,17 @@ public class ForestLayer : RasterLayer
                     InitialPositionLayer.SpawnPositionsHuman.RemoveAt(0);
                 }
             }).Take(ht.AmountToSpawn);
-            foreach (var human in humanns)
+            foreach (var human in humans)
             {
                 HumanEnvironment.Insert(human);
             }
-            Console.WriteLine(humanns.Count()+" "+ ht.Name + "s spawned");
+            Console.WriteLine(humans.Count()+" "+ ht.Name + "s spawned");
         });
         Console.WriteLine(HumanEnvironment.Entities.Count()+" humans inserted");
     }
 
 
-    public Position newRandomeLocation()
+    public Position NewRandomeLocation()
     {
         var rnd = new Random();
         var x = TreeEnvironment.DimensionX;
