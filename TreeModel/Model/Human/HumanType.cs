@@ -5,7 +5,7 @@ namespace TreeModel.Model.Human;
 using Mars.Interfaces.Agents;
 
 
-public class HumanTypes: IEntity
+public class HumanType: IEntity
 {
     public string Name { get; set; }
     

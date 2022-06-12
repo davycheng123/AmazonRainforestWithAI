@@ -23,22 +23,25 @@ namespace TreeModel.Model.Tree
         public ForestLayer ForestLayer { get; set; }
         public State State { get; set; } = State.Seedling;
         public int Age { get; set; } = 1;
-        public double Wood { get; set; } = 0;
+        public double Wood { get; set; } 
         
         public bool Alive { get; set; }
-        public double Fruit { get; set; } = 0;
+        public double Fruit { get; set; }
 
+        public bool nowSpread { get; set; }
         public double LifePoints { get; set; } = 100;
         public void Init(ForestLayer layer)
         {
             ForestLayer = layer;
             Alive = true;
+            nowSpread = false;
         }
 
         public void Tick()
         {
             if (Alive)
             {
+
             // The State will be check after every day to see if any changes occurs
             CheckState();
             
@@ -57,11 +60,13 @@ namespace TreeModel.Model.Tree
             
            if( value< 5 ) ForestLayer.Spread(this, ForestLayer.newRandomeLocation());
             }
+            
 
-            // Check if Tree over max Age, or Life points < 0. If Die then how much the Wood is Left
-            CheckAlive();
+                // Check if Tree over max Age, or Life points < 0. If Die then how much the Wood is Left
+                CheckAlive();
 
-        }
+            }
+        
 
         public Guid ID { get; set; }
         public Position Position { get; set; }
@@ -109,7 +114,8 @@ namespace TreeModel.Model.Tree
         // TODO: Affect of Water and Nutrient
         public void ProduceFruits()
         {
-            if (State == State.Adult) Fruit += 1 * ProductionRate;
+            
+            if (State == State.Adult) Fruit += 1 * ProductionRate * 99 ;
         }
 
         private void CheckAlive()
@@ -117,52 +123,43 @@ namespace TreeModel.Model.Tree
             if (LifePoints < 0 || Age >MaxAge) Die();
         }
         
-        
-        
-        
-        /*
-        //TODO: Improve
-        // we Can say this spread is nature spread not relevant with animal 
-        
-        public void Spread()
+        public void Spread(Position position)
         {
-            if (ForestLayer.TreeEnvironment.Entities.Any(t => t.Position.Equals(Position)))
-             {
-                 return;
-             }
-             
-             // RandomeSpot
-             var rnd = new Random();
-             var x = ForestLayer.TreeEnvironment.DimensionX;
-             x = rnd.Next(x);
-             var y = ForestLayer.TreeEnvironment.DimensionY;
-             y = rnd.Next(y);
-             Position newpos = new Position(x, y);
-             
-             var positionTree = ForestLayer.TreeEnvironment.Entities.Any(t => t.Position.Equals(newpos));
-             if (positionTree != true)
-             {
-                 var tree = ForestLayer._agentManager.Spawn<Tree, ForestLayer>(null, t =>
-                 {
-                     t.Name = Name;
-                     t.ProductionRate = ProductionRate;
-                     t.ConsumptionRate = ConsumptionRate;
-                     t.GrowRate = GrowRate;
-                     t.MatureAge = MatureAge * 365;
-                     t.MaxAge = MaxAge * 365;
-                     t.Position = newpos;
+            if (nowSpread)
+            {
+                // Because the Animal alway on a tree so it should be planting a tree close to it 
+                Random rand = new Random();
+                var newX = position.X + rand.Next(3);
+                var newY = position.Y + 1;
+                Position newPos = new Position(newX, newY);
 
-                 } ) ;
-                 
-                 if (tree != null)
-                 {
-                     ForestLayer.TreeEnvironment.Insert(tree.First());
-                 }
-             }
+                // Ask if any Tree are at the location
+                var positionTree = ForestLayer.TreeEnvironment.Entities.Any(t => t.Position.Equals(newPos));
+                if (positionTree != true)
+                {
+                    var tree = ForestLayer._agentManager.Spawn<Tree, ForestLayer>(null, t =>
+                    {
+                        t.Name = Name;
+                        t.ProductionRate = ProductionRate;
+                        t.ConsumptionRate = ConsumptionRate;
+                        t.GrowRate = GrowRate;
+                        t.MatureAge = MatureAge * 365;
+                        t.MaxAge = MaxAge * 365;
+                        t.Position = newPos;
 
+                    });
 
-        }*/
-        
+                    if (tree != null)
+                    {
+                        ForestLayer.TreeEnvironment.Insert(tree.First());
+                    }
+                }
+
+                nowSpread = false;
+            }
+            
+        }
+
 
         public void Die()
         {

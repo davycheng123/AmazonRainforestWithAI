@@ -63,7 +63,6 @@ public class Human: IHuman<ForestLayer>, IPositionable
         else
         {
             ForestLayer.HumanEnvironment.MoveTo(this, ForestLayer.newRandomeLocation(), Movement);
-
         }
     }
 

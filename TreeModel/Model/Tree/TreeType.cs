@@ -11,6 +11,10 @@ public class TreeType : IEntity
     public int MatureAge { get; set; }
     public double ConsumptionRate { get; set;}
     public double GrowRate { get; set; }
+    
+    public double Fruits { get; set; }
+    
+    public double Woods { get; set; }
     public double ProductionRate { get; set; }
     public Guid ID { get; set; }
 }

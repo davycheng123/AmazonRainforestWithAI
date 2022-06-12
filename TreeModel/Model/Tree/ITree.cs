@@ -21,7 +21,8 @@ namespace TreeModel.Model.Tree
         /// <summary>
         /// Attempts to spread on to neighboring cells
         /// </summary>
-       // void Spread();
+        //void Spread();
+
 
         /// <summary>
         /// This kills the tree but it's corpse remains until it decays or was harvested

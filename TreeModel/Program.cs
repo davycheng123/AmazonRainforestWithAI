@@ -26,12 +26,7 @@ namespace TreeModel
             description.AddAgent<Tree, ForestLayer>();
             description.AddLayer<TerrainLayer>();
             description.AddLayer<WeatherLayer>();
-            //description.AddLayer<ForestLayer>();
-            //description.AddLayer<AnimalLayer>();
-            //description.AddLayer<HumanLayer>(); 
-            //description.AddAgent<Tree, ForestLayer>();
-            //description.AddAgent<Animal, AnimalLayer>();
-            //description.AddAgent<Human, HumanLayer>(); 
+            
 
             // scenario definition
             // use config.json that provides the specification of the scenario

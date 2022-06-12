@@ -19,9 +19,8 @@ public class Animal : IAnimal<ForestLayer>
     public Position Position { get; set; }
     
     //100% LifePoints & Energy 
-    
-    
-    public int LifePoints { get; set; }
+    public double LifePoints { get; set; }
+
     public double Energy { get; set; }
 
     // name = type, example: name = Monkey
@@ -35,6 +34,8 @@ public class Animal : IAnimal<ForestLayer>
     public double ConsumptionRate { get; set;}
     
     public double Poop2Tree { get; set; }
+    
+    public double ReproduceRate { get; set; }
     
     // herbivore = eats plants/fruits
     public bool Herbivore { get; set; }
@@ -52,24 +53,47 @@ public class Animal : IAnimal<ForestLayer>
     }
 
     public void Tick()
-    {
+
+    {   
         // Every Tick the Animal will try to find tree 
         _adultTree = ForestLayer.TreeEnvironment.Explore(Position, 10).ToList().Map(t => t.Position);
-
-        if (!Alive) return;
+        
+        // check Alive
+        if(!Alive) return;
+        
+        // Add Moving for the Animal
         Move();
-        if (Energy < 50) Consume();
+        
+        // Add Condition for animal to eat
+        if(Energy < 50) Consume();
+        
+        // Chance to Poop
         Poop();
+        
+        // Age Increase
         Age++;
+
+
+        Random rnd = new Random();
+        // Reproduce
+        if ((Energy > 80) && (rnd.Next(1000) < ReproduceRate ))
+        {
+             ForestLayer.Reproduce(this);
+        }
+
+
+        // Lower the Life point if the Energy to low
         if (Energy < 1) LifePoints--;
         Energy -= 1 * ConsumptionRate;
+        
+        
+        // Dying condition
         if (Age > MaxAge || LifePoints < 1) Die();
     }
 
-  
     public void Move()
     {
-        //if (_adultTree.Count > 0 && Energy < 30)
+        //The Animal will try to find tree to move to
         if (_adultTree.Count > 0)    
         {
             ForestLayer.AnimalEnvironment.MoveTo(this, _adultTree.First(), MovementSpeed);
@@ -90,23 +114,45 @@ public class Animal : IAnimal<ForestLayer>
 
     public void Consume()
     {
-        // Ask if the tree enough Fruits
-        var fruitLeft = ForestLayer.FruitLeft(Position);
-
-        if (fruitLeft > 0)
+        /*
+        if (Carnivore)
         {
+<<<<<<< HEAD
+            var AnimalNearby = ForestLayer.ExploreAnimals(Position,(int)MovementSpeed).First();
+=======
             // Needed Fruit for full health
             var fruitNeed = (100 - Energy) / 20;
         
             // Gather Fruit from a tree, lower the Fruits count
             Energy += 1 * (ForestLayer.GatherFruit(Position, ConsumptionRate)) ;
             LifePoints += (int) (1* ConsumptionRate);
+>>>>>>> b871ccb (#human.cs implement)
             
         }
+        */
+        
+        if (Herbivore)
+        {
+            // Ask if the tree enough Fruits
+            var fruitLeft = ForestLayer.FruitLeft(Position);
+            if (fruitLeft > 0)
+            {
+                // Needed Fruit for full health
+                var fruitNeed = (100 - Energy) / 20;
+        
+                // Gather Fruit from a tree, lower the Fruits count
+                
+                Energy += 1 * (ForestLayer.GatherFruit(Position, ConsumptionRate)) ;
+                LifePoints += 10* ConsumptionRate;
+
+            }
+        }
+
     }
 
     public void Poop()
     {
+
         ForestLayer.TerrainLayer.AddSoilNutrients(Position,10);
 
 
@@ -120,12 +166,19 @@ public class Animal : IAnimal<ForestLayer>
         }
         
         ForestLayer.TerrainLayer.AddSoilNutrients(Position,10);
+
     }
 
     public void Die()
     {
-        ForestLayer.TerrainLayer.AddSoilNutrients(Position,100);
+
+        Alive = false;
+        // Benefit the Nutrient and the Water 
+        ForestLayer.TerrainLayer.AddSoilNutrients(Position,50);
+        ForestLayer.TerrainLayer.AddWater(Position, 50);
         ForestLayer.AnimalEnvironment.Remove(this);
-        ForestLayer.TerrainLayer.AddSoilNutrients(Position,100);
     }
+
+    
+    
 }
