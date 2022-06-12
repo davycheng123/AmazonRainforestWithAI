@@ -19,6 +19,10 @@
     {
       "name": "TreeType",
       "file": "Resources/treeType.csv"
+    },
+    {
+      "name": "HumanTypes",
+      "file": "Resources/humanType.csv"
     }
   ]
   ,
@@ -46,6 +50,10 @@
         {
           "parameter": "TreeTypes","value" : ["PalmTree","BrazilNutTree","NutmegTree"]
         }
+      ,
+        {
+          "parameter": "HumanTypes","value" : ["Good","Bad"]
+        }
       ]
     }
   ],
@@ -55,6 +63,9 @@
     },
     {
       "name": "Animal"
+    },
+    {
+      "name": "Human"
     }
   ]
 }

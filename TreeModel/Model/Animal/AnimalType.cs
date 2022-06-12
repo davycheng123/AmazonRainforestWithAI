@@ -13,6 +13,13 @@ public class AnimalType : IEntity
     public double ConsumptionRate { get; set;}
     public bool Herbivore { get; set; }
     public bool Carnivore { get; set; }
+    
+    public int LifePoints { get; set; }
+    
+    public  double Poop2Tree { get; set; }
+    
+    public double Energy { get; set; }
+    
     public Guid ID { get; set;}
     
 }
