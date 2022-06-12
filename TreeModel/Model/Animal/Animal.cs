@@ -76,7 +76,7 @@ public class Animal : IAnimal<ForestLayer>
 
         Random rnd = new Random();
         // Reproduce
-        if ((Energy > 80) && (rnd.Next(1000) < ReproduceRate ))
+        if ((Energy > 50) && (rnd.Next(100) < ReproduceRate ) && (ForestLayer.ExploreAnimals(Position,1).Count >2))
         {
              ForestLayer.Reproduce(this);
         }

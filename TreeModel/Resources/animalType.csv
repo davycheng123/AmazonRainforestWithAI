@@ -1,3 +1,3 @@
 Name;AmountToSpawn;MaxAge;MatureAge;MovementSpeed;ConsumptionRate;Herbivore;Carnivore;LifePoints;Energy;Poop2Tree;ReproduceRate
-Monkey;70;100;5;5.0;10.0;true;false;1000;1000;2;5
-Bird;30;100;1;15.0;16.8;true;false;1000;1000;1;10
+Monkey;70;100;5;5.0;10.0;true;false;1000;1000;2;20
+Bird;30;100;1;15.0;16.8;true;false;1000;1000;1;30

@@ -20,10 +20,12 @@ namespace TreeModel
             var description = new ModelDescription();
             description.AddEntity<AnimalType>();
             description.AddEntity<TreeType>();
+            description.AddEntity<HumanType>();
             description.AddLayer<InitialPositionLayer>();
             description.AddLayer<ForestLayer>();
             description.AddAgent<Animal, ForestLayer>();
             description.AddAgent<Tree, ForestLayer>();
+            description.AddAgent<Human, ForestLayer>();
             description.AddLayer<TerrainLayer>();
             description.AddLayer<WeatherLayer>();
             
