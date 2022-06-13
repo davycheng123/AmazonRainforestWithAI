@@ -1,156 +1,149 @@
 using System;
-using System.Linq;
-using System.Linq.Expressions;
+
 using Mars.Interfaces.Environments;
-using Microsoft.CodeAnalysis.FlowAnalysis;
+
+using TreeModel.Model.Environment;
 using TreeModel.Model.Shared;
 
 namespace TreeModel.Model.Tree
 {
-    public class Tree : ITree<TreeLayer>
+    public class Tree : ITree<ForestLayer>
     {
-
-        public void Init(TreeLayer layer)
+        public string Name { get; set; }
+        public int AmountToSpawn { get; set; } = 365;
+        public int MaxAge { get; set; }
+        public int MatureAge { get; set; }          
+        public double ConsumptionRate { get; set;}  //For the Nutrient and the Water
+        public double GrowRate { get; set; }        //For the Wood  
+        public double ProductionRate { get; set; }  //For the Fruit 
+        
+        
+        public ForestLayer ForestLayer { get; set; }
+        public State State { get; set; } = State.Seedling;
+        public int Age { get; set; } = 1;
+        public double Wood { get; set; } 
+        
+        public bool Alive { get; set; }
+        public double Fruit { get; set; }
+        
+        public double LifePoints { get; set; } = 100;
+        public void Init(ForestLayer layer)
         {
-            var random = new Random();
-            TreeLayer = layer;
-            wood = random.Next(100, 250);
-            resilience = random.Next(8, 12)*0.1;
-            //Console.WriteLine(Position);
-        }
+            ForestLayer = layer;
+            Alive = true;
 
+        }
 
         public void Tick()
         {
-            Grow();
-            // TODO: tree can get sick?
-            // -> higher chance of infection if nearby trees get sick
-            // Sick();
-            
-            // Check on Life Point
-            if (LifePoints == 0)
+            if (Alive)
             {
-                this.alive = false;
-                Die();
+
+                // The State will be check after every day to see if any changes occurs
+                CheckState();
+                
+                // It will growth after every Ticks
+                Grow();
+                
+                // The GrowRate only affect the wood amount 
+                IncreaseWood();
+                            
+                // The ProductionRate only affect the Fruits amount
+                ProduceFruits();
+                
+                // Spread the Tree
+                    Random rnd = new Random();
+                var value = rnd.Next(10000000);
+            
+                if( value< 5 ) ForestLayer.Spread(this, ForestLayer.NewRandomeLocation());
             }
-            
-            // Check on Wood Value
-            if (this.wood == 0)
+            // Check if Tree over max Age, or Life points < 0. If Die then how much the Wood is Left
+            CheckAlive();
+
+            }
+        
+
+        public Guid ID { get; set; }
+        public Position Position { get; set; }
+
+        private void CheckState()
+        {
+            // We say that after a year itr will change state from seeding to Juvenile
+            if (365<Age && Age< MatureAge)
             {
-                TreeLayer.Environment.Remove(this);
+                State = State.Juvenile;
+            }
+            if (Age > MatureAge)
+            {
+                State = State.Adult;
             }
         }
-
+        
         public void Grow()
         {
-            // Because every Tree have it own grown rate so we have to calculate the rate of it
-            // Affect from enviroment are: Nutrient and Water (which are also affected by weather)
-            // We have a formula or sth: rate_effect = (Nutrient + Water )* rate
-            // TODO: Come up with a formula that calculate how all the element affect the Tree
-            // Example
-            // var rate = this.growthRate;
-            // double rateEffect = rate - this.resilience;
-            double growthRate = 1;
-            growthRate *= DayPerTick / 365.0;
-            var rateEffect = growthRate * this.resilience;
+            // ConsumptionRate affect Water and Nutrient will increase LifePoints
+            // Increase Age
+            Age ++;
+            // Increase the Life points
+            LifePoints += ConsumptionRate;
+            ForestLayer.TerrainLayer.RemoveWater(Position, ConsumptionRate);
+            ForestLayer.TerrainLayer.RemoveWater(Position, ConsumptionRate);
 
-
-            // Growing Age
-            this.age *= growthRate;
-            var random = new Random();
-            var woodGrowthPerYear = random.Next(100, 250);  // in centemeter
-            
-            // check of it enough age to change State 
-            if (age < matureAge)
-            {
-                this.state = State.Juvenile;
-                this.wood += (int) (woodGrowthPerYear * rateEffect * 0.8);
-            } 
-            else
-            {
-                this.state = State.Adult;
-                this.wood += (int) (woodGrowthPerYear * rateEffect);
-            }
-
-            // Only Adult can produce Fruit
-            if (this.state == State.Adult)
-            {
-                var fruitRate = random.Next(this.fruitRandom[0], this.fruitRandom[1]) * this.fruitConstant;
-                ProduceFruits(fruitRate * rateEffect);
-            }
         }
         
-        
 
-        public void ProduceFruits(double rate)
+        public void IncreaseWood()
         {
-            this.fruit += (int) rate;
-        }
-
-        public void Spread()
-        {
-            
-            var AnimalNearby = TreeLayer.AnimalLayer.ExploreAnimals(Position, 5).Any();
-            var Distance = 10;
-            if (AnimalNearby == true) Distance += 5;
-            
-            switch(this.Specie)
+            switch(State)
             {
-                case Specie.NutmegTree:
-                    TreeLayer.CreateTree(1, Position.CreatePosition(Position.X + Distance, Position.Y + Distance));
+                case State.Seedling:break;
+                case State.Juvenile:
+                    Wood += NutrAndWaterEffect(Position) * GrowRate * 0.5;
                     break;
-                case Specie.PalmTree:
-                    TreeLayer.CreateTree(2, Position.CreatePosition(Position.X + Distance, Position.Y + Distance)); 
-                    break;
-                case Specie.BrazilNutTree:
-                    TreeLayer.CreateTree(3, Position.CreatePosition(Position.X + Distance, Position.Y + Distance)); 
+                case State.Adult:
+                    Wood += NutrAndWaterEffect(Position) * GrowRate;
                     break;
             }
-
         }
+    
+        // TODO: Affect of Water and Nutrient
+        public void ProduceFruits()
+        {
+            
+            if (State == State.Adult) Fruit += NutrAndWaterEffect(Position) * ProductionRate * 99 ;
+        }
+
+        private void CheckAlive()
+        {
+            if (LifePoints < 0 || Age >MaxAge) Die();
+        }
+        
 
         public void Die()
         {
-            this.state = State.DeadWood;
-            // this.growthRate = 0;
+            Alive = false;
+            // Check on Wood Value
+            if (Wood == 0)
+            {
+                ForestLayer.TreeEnvironment.Remove(this);
+            }
+            
+            State = State.DeadWood;
+            GrowRate = 0;
+            ProductionRate = 0;
+            ConsumptionRate = -5;
+            
             // fruits decay over time
-            if (this.fruit < 100) 
-                this.fruit = 0;
-            else  
-                this.fruit = (int) (this.fruit * 0.9);
-            this.resilience = 0;
+            if (Fruit < 100)
+                Fruit = 0;
+            else
+                Fruit = (int) (Fruit * 0.9);
+            
         }
 
-        public int DayPerTick = 1;
-
-        public double resilience { get; set; }
-        
-        // public int growthRate { get; set; }
-        
-        public int fruit { get; set; }
-        
-        public bool alive { get; set; }
-
-        public double age { get; set; }     // in year
-        
-        public int matureAge { get; set; }
-        
-        public int fruitConstant { get; set; }
-        
-        public int[] fruitRandom { get; set; }
-        
-        public int wood { get; set; }   // in terms of height in centimeter
-        
-        public Specie Specie { get; set; }
-        
-        public State state { get; set; }
-
-        public TreeLayer TreeLayer { get; private set; }
-        public Position Position { get; set; }
-        
-        public int LifePoints { get; set; }
-            
-        // identifies the agent
-        public Guid ID { get; set; }
+        public double NutrAndWaterEffect(Position position)
+        {
+            return ((ForestLayer.TerrainLayer.GetSoilNutrients(position) + ForestLayer.TerrainLayer.GetWaterLevel(position))/100) +1;
+        }
     }
 }

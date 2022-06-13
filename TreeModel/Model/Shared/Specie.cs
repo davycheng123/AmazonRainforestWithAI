@@ -2,8 +2,9 @@ namespace TreeModel.Model.Shared
 {
     public enum Specie
     {
-        PalmTree,
-        BrazilNutTree,
-        NutmegTree
+        PalmTree ,
+        BrazilNutTree ,
+        NutmegTree ,
+        NotATree 
     }
 }

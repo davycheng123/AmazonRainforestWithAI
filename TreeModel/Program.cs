@@ -4,6 +4,7 @@ using Mars.Components.Starter;
 using Mars.Interfaces.Model;
 using TreeModel.Model.Animal;
 using TreeModel.Model.Environment;
+using TreeModel.Model.Human;
 using TreeModel.Model.Tree;
 
 namespace TreeModel
@@ -17,15 +18,17 @@ namespace TreeModel
             
             // Create a new model description that holds all parts of the model
             var description = new ModelDescription();
-            
+            description.AddEntity<AnimalType>();
+            description.AddEntity<TreeType>();
+            description.AddEntity<HumanType>();
+            description.AddLayer<InitialPositionLayer>();
+            description.AddLayer<ForestLayer>();
+            description.AddAgent<Animal, ForestLayer>();
+            description.AddAgent<Tree, ForestLayer>();
+            description.AddAgent<Human, ForestLayer>();
             description.AddLayer<TerrainLayer>();
             description.AddLayer<WeatherLayer>();
-            description.AddLayer<TreeLayer>();
-            description.AddLayer<AnimalLayer>();
-            //description.AddLayer<HumanLayer>(); TODO
-            description.AddAgent<Tree, TreeLayer>();
-            description.AddAgent<Animal, AnimalLayer>();
-            //description.AddAgent<Human, HumanLayer>(); TODO
+            
 
             // scenario definition
             // use config.json that provides the specification of the scenario

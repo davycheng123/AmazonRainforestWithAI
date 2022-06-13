@@ -1,121 +1,179 @@
 using System;
-using System.Linq;
-using Mars.Common.Core.Random;
 using Mars.Interfaces.Environments;
-using TreeModel.Model.Shared;
-using TreeModel.Model.Tree;
 using System.Collections.Generic;
-
+using System.Linq;
+using Mars.Interfaces.Annotations;
+using TreeModel.Model.Environment;
+using ServiceStack;
 namespace TreeModel.Model.Animal;
 
-public class Animal : IAnimal<AnimalLayer>
+public class Animal : IAnimal<ForestLayer>
 {
-    // Set Taget for Animals
-    private Position _goal;
+    private List<Position> _adultTree;
+    public ForestLayer ForestLayer { get; set; }
+    
+    public TerrainLayer TerrainLayer { get; set; }
+    
+    public bool Alive { get; set; }
 
-    private List<Position> TreeNearby;
+    public Position Position { get; set; }
+    
+    //100% LifePoints & Energy 
+    public double LifePoints { get; set; }
 
-    public void Init(AnimalLayer layer)
+    public double Energy { get; set; }
+
+    // name = type, example: name = Monkey
+    public string Name { get; set; }
+    public int Age { get; set; }
+    public int MaxAge { get; set; }
+    public int MatureAge { get; set; }
+    
+    // rates
+    public double MovementSpeed { get; set; }
+    public double ConsumptionRate { get; set;}
+    
+    public double Poop2Tree { get; set; }
+    
+    public double ReproduceRate { get; set; }
+    
+    // herbivore = eats plants/fruits
+    public bool Herbivore { get; set; }
+    
+    //carnivore = eats meat/other animals
+    public bool Carnivore { get; set; }
+    
+
+    // identifies the agent
+    public Guid ID { get; set; }
+    public void Init(ForestLayer layer)
     {
-        AnimalLayer = layer;
+        ForestLayer = layer;
+        Alive = true;
     }
 
     public void Tick()
-    {
-        //TODO
-        TreeNearby = AnimalLayer.TreeLayer.ExploreTrees(this.Position,10);
-        //Console.Write(ListPosition.Count);
+
+    {   
+        // Every Tick the Animal will try to find tree 
+        _adultTree = ForestLayer.TreeEnvironment.Explore(Position, 10).ToList().Map(t => t.Position);
         
+        // check Alive
+        if(!Alive) return;
         
-        // TODO: 
+        // Add Moving for the Animal
         Move();
-        if (this.Energy > 10)
-        {
-            Consume();
-        }
+        
+        // Add Condition for animal to eat
+        if(Energy < 50) Consume();
+        
+        // Chance to Poop
+        Poop();
+        
+        // Age Increase
+        Age++;
 
-        if (this.LifePoints == 0)
-        {
-            Die();
-        }
 
-        if (Energy <= 0)
-        {
-            Energy = 0;
-            LifePoints -= 5;
-        }
+        Random rnd = new Random();
+        // Reproduce
+        
+        if(ForestLayer.GetCurrentTick() % 200 == 0 && (Energy > 70) && ForestLayer.ExploreAnimals(Position,1).Count > 2 ) ForestLayer.Reproduce(this);
+  
+        
+        // Lower the Life point if the Energy to low
+        if (Energy < 1) LifePoints--;
+        Energy -= 1 * ConsumptionRate;
+        
+        
+        // Dying condition
+        if (Age > MaxAge || LifePoints < 1) Die();
     }
 
     public void Move()
     {
-        //TODO: Improve Moving
-        var AdultsTree = TreeNearby.FindAll(t => AnimalLayer.TreeLayer.GetState(t) == State.Adult);
-        
-        if (AdultsTree.Count > 0 && Energy < 30)
+        //The Animal will try to find tree to move to
+        if (_adultTree.Count > 0)    
         {
-            AnimalLayer.Environment.MoveTo(this, AdultsTree.First(), movement);
+            ForestLayer.AnimalEnvironment.MoveTo(this, _adultTree.First(), MovementSpeed);
         }
-        else{
+        else
+        {
             var rnd = new Random();
-            var x = AnimalLayer.Environment.DimensionX;
+            var x = ForestLayer.AnimalEnvironment.DimensionX;
             x = rnd.Next(x);
-            var y = AnimalLayer.Environment.DimensionY;
+            var y = ForestLayer.AnimalEnvironment.DimensionY;
             y = rnd.Next(y);
-            AnimalLayer.Environment.MoveTo(this, new Position(x, y), movement);
+            ForestLayer.AnimalEnvironment.MoveTo(this, new Position(x, y), MovementSpeed);
         }
+
         // Lower the Energy when Moving
-        Energy --;
+        Energy--;
     }
 
     public void Consume()
     {
-        //Console.WriteLine("Animal Eat");
-        var stateTree = AnimalLayer.TreeLayer.GetState(this.Position);
-        // Ask if the tree enough Fruits
-        var fruitLeft = AnimalLayer.TreeLayer.FruitLeft(Position);
-        if (fruitLeft <= 0 )
+        /*
+        if (Carnivore)
         {
-            return;
+<<<<<<< HEAD
+            var AnimalNearby = ForestLayer.ExploreAnimals(Position,(int)MovementSpeed).First();
+=======
+            // Needed Fruit for full health
+            var fruitNeed = (100 - Energy) / 20;
+        
+            // Gather Fruit from a tree, lower the Fruits count
+            Energy += 1 * (ForestLayer.GatherFruit(Position, ConsumptionRate)) ;
+            LifePoints += (int) (1* ConsumptionRate);
+>>>>>>> b871ccb (#human.cs implement)
+            
         }
+        */
         
-        // Needed Fruit for full health
-        var fruitNeed = (int)((100 - Energy)/10);
+        if (Herbivore)
+        {
+            // Ask if the tree enough Fruits
+            var fruitLeft = ForestLayer.FruitLeft(Position);
+            if (fruitLeft > 0)
+            {
+                // Needed Fruit for full health
+                var fruitNeed = (100 - Energy) / 20;
+        
+                // Gather Fruit from a tree, lower the Fruits count
+                
+                Energy += 10 * (ForestLayer.GatherFruit(Position, fruitNeed)) ;
+                LifePoints += 1 * ConsumptionRate;
 
-        // Gather Fruit from a tree, lower the Fruits count
-        Energy = (AnimalLayer.TreeLayer.GatherFruit(Position, fruitNeed)) * 10;
-        
+            }
+        }
+
     }
 
     public void Poop()
     {
-        AnimalLayer.TerrainLayer.AddSoilNutrients(Position,10);
+
+        ForestLayer.TerrainLayer.AddSoilNutrients(Position,10);
+        Random rnd = new Random();
+        var value = rnd.Next(100000);
         
+        if (value < Poop2Tree)
+        {
+            var tree = ForestLayer.ExploreTrees(Position,1);
+                    if (!tree.IsEmpty()) ForestLayer.Spread( ForestLayer.GetTree(tree.First()),Position);
+        }
+        
+        ForestLayer.TerrainLayer.AddSoilNutrients(Position,10);
 
     }
 
     public void Die()
     {
-        //TODO: ADD Benefit the Nutrient from the TerrainLayer.cs
-        
-        
-        AnimalLayer.Environment.Remove(this);
+
+        Alive = false;
+        // Benefit the Nutrient and the Water 
+        ForestLayer.TerrainLayer.AddSoilNutrients(Position,50);
+        ForestLayer.AnimalEnvironment.Remove(this);
     }
-    
-    public AnimalLayer AnimalLayer { get; set; }
-    
-    public bool alive { get; set; }
-    
-    public Position Position { get; set; }
-        
-    public int PoopRate { get; set; }
-    
-    public int movement { get; set; }
 
-    public int LifePoints { get; set; } = 100;
-
-    public int Energy { get; set; } = 10;
-
-
-    // identifies the agent
-    public Guid ID { get; set; }
+    
+    
 }

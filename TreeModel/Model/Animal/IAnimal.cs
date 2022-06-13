@@ -1,6 +1,7 @@
 using Mars.Interfaces.Agents;
 using Mars.Interfaces.Environments;
 using Mars.Interfaces.Layers;
+using TreeModel.Model.Shared;
 
 namespace TreeModel.Model.Animal
 {

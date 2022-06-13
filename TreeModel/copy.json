@@ -1,9 +1,9 @@
 {
   "globals": {
     "startTime": "2022-01-01T10:00:00.000Z",
-    "endTime": "2300-01-01T10:00:00.000Z",
+    "endTime": "2024-01-01T10:00:00.000Z",
     "deltaT": 1,
-    "deltaTUnit": "weeks",
+    "deltaTUnit": "days",
     "output": "csv",
     "options": {
       "delimiter": ";",
@@ -19,10 +19,6 @@
     {
       "name": "TreeType",
       "file": "Resources/treeType.csv"
-    },
-    {
-      "name": "HumanType",
-      "file": "Resources/humanType.csv"
     }
   ]
   ,
@@ -35,8 +31,10 @@
       "file": "Resources/terrain_small.csv"
     },
     {
-      "name": "InitialPositionLayer",
-      "file": "Resources/tree_map_small.csv"
+      "name": "TreeLayer",
+      "file": "Resources/trees_small.csv",
+      "dimensionx": 100,
+      "dimensiony": 100
     },
     {
       "name": "ForestLayer",
@@ -50,22 +48,30 @@
         {
           "parameter": "TreeTypes","value" : ["PalmTree","BrazilNutTree","NutmegTree"]
         }
-      ,
-        {
-          "parameter": "HumanTypes","value" : ["Good","Bad"]
-        }
       ]
+    }
+    ,
+    {
+      "name": "AnimalLayer",
+      "file": "Resources/animals_small.csv",
+      "dimensionx": 100,
+      "dimensiony": 100
+    },
+    {
+      "name": "HumanLayer",
+      "file": "Resources/humans_small.csv",
+      "dimensionx": 100,
+      "dimensiony": 100
     }
   ],
   "agents": [
     {
-      "name": "Tree"
+      "name": "Tree",
+      "count": 400
     },
     {
-      "name": "Animal"
-    },
-    {
-      "name": "Human"
+      "name": "Animal",
+      "count": 150
     }
   ]
 }
