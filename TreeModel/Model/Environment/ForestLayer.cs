@@ -48,7 +48,7 @@ public class ForestLayer : RasterLayer
         
         SpawnAnimals();
         SpawnTrees();
-        //SpawnHumans();
+        SpawnHumans();
         return true;
     }
 
@@ -288,9 +288,10 @@ public class ForestLayer : RasterLayer
 
         public Tree.Tree GetTree(Position pos)
         {
+            if (pos == null) return null;
             if (TreeEnvironment.Entities.Any(t => t.Position.Equals(pos)))
             {
-                return TreeEnvironment.Entities.First(t => t.Position.Equals(pos));
+                return TreeEnvironment.Entities.FirstOrDefault(t => t.Position.Equals(pos));
             }
             return null;
         }

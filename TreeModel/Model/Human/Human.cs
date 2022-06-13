@@ -43,16 +43,18 @@ public class Human: IHuman<ForestLayer>, IPositionable
     public void Tick()
     {
         var listPosition = ForestLayer.ExploreTrees(this.Position,10);
+
+        if (listPosition.Any())
+        {
+            if(WoodStorage < 10) CutDownTree(listPosition);
+            
+            // Spread the Tree
+            Random rnd = new Random();
+            if (rnd.NextDouble() < HarvestRate )  FruitHarvest(listPosition);
+            if (rnd.NextDouble() < PlantingRate) PlantingTree(listPosition);
+        }
         
         Move();
-        if(WoodStorage < 10) CutDownTree(listPosition);
-        
-        // Spread the Tree
-        Random rnd = new Random();
-        if(rnd.Next(100) % HarvestRate  == 0)  FruitHarvest(listPosition);
-        if (rnd.Next(100) % PlantingRate == 0) PlantingTree(listPosition);
-        
-        
     }
 
     public void Move()
@@ -81,15 +83,17 @@ public class Human: IHuman<ForestLayer>, IPositionable
         foreach (var treePosition in positions)
         {
             Tree.Tree treeAtLoc = ForestLayer.GetTree(treePosition);
-            if(treeAtLoc.State == State.Adult){
-                if (treeAtLoc.Wood != 0)
-                {
-                    ForestLayer.GatherWood(treePosition, WoodConsumption);
-                    ForestLayer.HurtTree(treePosition,Damage);
+            if (treeAtLoc != null)
+            {
+                if(treeAtLoc.State == State.Adult){
+                    if (treeAtLoc.Wood != 0)
+                    {
+                        WoodStorage += ForestLayer.GatherWood(treePosition, WoodConsumption);
+                        ForestLayer.HurtTree(treePosition,Damage);
+                    }
                 }
             }
-         
-           
+          
         }
     }
 
@@ -98,20 +102,25 @@ public class Human: IHuman<ForestLayer>, IPositionable
         foreach (var treePosition in positions)
         {
             Tree.Tree treeAtLoc = ForestLayer.GetTree(treePosition);
-            if (treeAtLoc.State == State.Adult)
+            if (treeAtLoc != null)
             {
-                if (treeAtLoc.Fruit != 0)
+                if (treeAtLoc.State == State.Adult)
                 {
-                    ForestLayer.GatherFruit(treePosition, HarvestRate);
-                    ForestLayer.HurtTree(treePosition, Damage - 5);
+                    if (treeAtLoc.Fruit != 0)
+                    {
+                        ForestLayer.GatherFruit(treePosition,10* HarvestRate);
+                        ForestLayer.HurtTree(treePosition, Damage - 5);
+                    }
                 }
             }
+
+           
         }
     }
 
     public void PlantingTree(List<Position> positions)
     {
         var tree = ForestLayer.GetTree(positions.First()); 
-        ForestLayer.Spread(tree,Position);
+        if(tree != null) ForestLayer.Spread(tree,Position);
     }
 }

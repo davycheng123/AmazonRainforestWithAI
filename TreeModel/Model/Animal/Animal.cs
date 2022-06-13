@@ -76,12 +76,10 @@ public class Animal : IAnimal<ForestLayer>
 
         Random rnd = new Random();
         // Reproduce
-        if ((Energy > 50) && (rnd.Next(100) < ReproduceRate ) && (ForestLayer.ExploreAnimals(Position,1).Count >2))
-        {
-             ForestLayer.Reproduce(this);
-        }
-
-
+        
+        if(ForestLayer.GetCurrentTick() % 200 == 0 && (Energy > 70) && ForestLayer.ExploreAnimals(Position,1).Count > 2 ) ForestLayer.Reproduce(this);
+  
+        
         // Lower the Life point if the Energy to low
         if (Energy < 1) LifePoints--;
         Energy -= 1 * ConsumptionRate;
@@ -142,8 +140,8 @@ public class Animal : IAnimal<ForestLayer>
         
                 // Gather Fruit from a tree, lower the Fruits count
                 
-                Energy += 1 * (ForestLayer.GatherFruit(Position, ConsumptionRate)) ;
-                LifePoints += 10* ConsumptionRate;
+                Energy += 10 * (ForestLayer.GatherFruit(Position, fruitNeed)) ;
+                LifePoints += 1 * ConsumptionRate;
 
             }
         }
@@ -154,8 +152,6 @@ public class Animal : IAnimal<ForestLayer>
     {
 
         ForestLayer.TerrainLayer.AddSoilNutrients(Position,10);
-
-
         Random rnd = new Random();
         var value = rnd.Next(100000);
         
@@ -175,7 +171,6 @@ public class Animal : IAnimal<ForestLayer>
         Alive = false;
         // Benefit the Nutrient and the Water 
         ForestLayer.TerrainLayer.AddSoilNutrients(Position,50);
-        ForestLayer.TerrainLayer.AddWater(Position, 50);
         ForestLayer.AnimalEnvironment.Remove(this);
     }
 
