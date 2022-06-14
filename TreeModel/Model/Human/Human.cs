@@ -19,11 +19,11 @@ public class Human: IHuman<ForestLayer>, IPositionable
     public Position Position { get; set; }
     
     
-    public double WoodConsumption { get; set; }
+    public double WoodConsumption { get; set; }     // constant: how many wood is consumed
 
     public double Movement { get; set; }
     
-    public double WoodStorage { get; set; }
+    public double WoodStorage { get; set; }         // variable: current no. of wood
     
     public double PlantingRate { get; set; }
     
@@ -46,7 +46,7 @@ public class Human: IHuman<ForestLayer>, IPositionable
 
         if (listPosition.Any())
         {
-            if(WoodStorage < 10) CutDownTree(listPosition);
+            if(WoodStorage < 10 || WoodStorage < WoodConsumption) CutDownTree(listPosition);
             
             // Spread the Tree
             Random rnd = new Random();
@@ -60,7 +60,7 @@ public class Human: IHuman<ForestLayer>, IPositionable
     public void Move()
     {
         // Only Move when the WoodStorage low 
-        if (WoodStorage < 10)
+        if (WoodStorage < 10 || WoodStorage < WoodConsumption)
         {
             var foundTree = ForestLayer.TreeEnvironment.Explore(Position, 10).ToList().Map(t => t.Position);
             if (foundTree.Count > 0)
@@ -71,7 +71,7 @@ public class Human: IHuman<ForestLayer>, IPositionable
             {
                 ForestLayer.HumanEnvironment.MoveTo(this, ForestLayer.NewRandomeLocation(), Movement);
             }
-        }else
+        } else
         {
             WoodStorage -= 1 * WoodConsumption; 
         }
