@@ -148,6 +148,7 @@ public class ForestLayer : RasterLayer
                 t.GrowRate = tt.GrowRate;
                 t.MatureAge = tt.MatureAge * 365;
                 t.MaxAge = tt.MaxAge * 365;
+                t.SpreadRate = tt.SpreadRate;
                 if (InitialPositionLayer.SpawnPositionsTree.IsEmpty())
                 {
                     var x = rnd.Next(TreeEnvironment.DimensionX);

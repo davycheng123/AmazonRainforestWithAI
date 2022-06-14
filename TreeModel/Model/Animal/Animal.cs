@@ -77,7 +77,7 @@ public class Animal : IAnimal<ForestLayer>
         Random rnd = new Random();
         // Reproduce
         
-        if(ForestLayer.GetCurrentTick() % 200 == 0 && (Energy > 70) && ForestLayer.ExploreAnimals(Position,1).Count > 2 ) ForestLayer.Reproduce(this);
+        if(ForestLayer.GetCurrentTick() % 150 == 0 && (Energy > 60) && ForestLayer.ExploreAnimals(Position,1).Count > 2 ) ForestLayer.Reproduce(this);
   
         
         // Lower the Life point if the Energy to low
@@ -153,7 +153,7 @@ public class Animal : IAnimal<ForestLayer>
 
         ForestLayer.TerrainLayer.AddSoilNutrients(Position,10);
         Random rnd = new Random();
-        var value = rnd.Next(100000);
+        var value = rnd.NextDouble();
         
         if (value < Poop2Tree)
         {

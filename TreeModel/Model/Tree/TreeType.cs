@@ -16,5 +16,8 @@ public class TreeType : IEntity
     
     public double Woods { get; set; }
     public double ProductionRate { get; set; }
+    
+    public double SpreadRate { get; set; }
+    
     public Guid ID { get; set; }
 }

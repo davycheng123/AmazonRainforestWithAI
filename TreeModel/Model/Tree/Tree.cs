@@ -26,6 +26,8 @@ namespace TreeModel.Model.Tree
         public bool Alive { get; set; }
         public double Fruit { get; set; }
         
+        public double SpreadRate { get; set; }
+        
         public double LifePoints { get; set; } = 100;
         public void Init(ForestLayer layer)
         {
@@ -53,9 +55,9 @@ namespace TreeModel.Model.Tree
                 
                 // Spread the Tree
                     Random rnd = new Random();
-                var value = rnd.Next(10000000);
+                var value = rnd.NextDouble();
             
-                if( value< 5 ) ForestLayer.Spread(this, ForestLayer.NewRandomeLocation());
+                if( value< SpreadRate ) ForestLayer.Spread(this, ForestLayer.NewRandomeLocation());
             }
             // Check if Tree over max Age, or Life points < 0. If Die then how much the Wood is Left
             CheckAlive();
