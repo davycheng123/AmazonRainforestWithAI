@@ -111,7 +111,7 @@ public class ForestLayer : RasterLayer
             a.Energy = 50;
             a.ConsumptionRate = inputAnimal.ConsumptionRate;
             a.MatureAge= inputAnimal.MatureAge * 365;
-            a.MaxAge = inputAnimal.MaxAge * 365;
+            a.MaxAge = rnd.Next((int)(inputAnimal.MaxAge*0.8),inputAnimal.MaxAge) * 365;
             a.LifePoints =100;
             a.Poop2Tree = inputAnimal.Poop2Tree;
             a.Position = newpos;
@@ -147,7 +147,7 @@ public class ForestLayer : RasterLayer
                 t.Wood = rnd.Next(0,(int)tt.Woods);
                 t.GrowRate = tt.GrowRate;
                 t.MatureAge = tt.MatureAge * 365;
-                t.MaxAge = tt.MaxAge * 365;
+                t.MaxAge = rnd.Next((int)(tt.MaxAge*0.7), tt.MaxAge) * 365;
                 t.SpreadRate = tt.SpreadRate;
                 if (InitialPositionLayer.SpawnPositionsTree.IsEmpty())
                 {

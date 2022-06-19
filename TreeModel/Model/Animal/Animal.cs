@@ -75,11 +75,13 @@ public class Animal : IAnimal<ForestLayer>
 
 
         Random rnd = new Random();
+        
         // Reproduce
-        
-        if(ForestLayer.GetCurrentTick() % 150 == 0 && (Energy > 60) && ForestLayer.ExploreAnimals(Position,1).Count > 2 ) ForestLayer.Reproduce(this);
-  
-        
+        const int daysToReproduce = 150;
+        // ForestLayer.GetCurrentTick() % daysToReproduce == 0
+        if(Age % daysToReproduce == 0 && (Energy > 60) && ForestLayer.ExploreAnimals(Position,1).Count > 2 && rnd.NextDouble() < ReproduceRate ) 
+            ForestLayer.Reproduce(this);
+
         // Lower the Life point if the Energy to low
         if (Energy < 1) LifePoints--;
         Energy -= 1 * ConsumptionRate;
