@@ -14,8 +14,6 @@ public class Human: IHuman<ForestLayer>, IPositionable
     
     public ForestLayer ForestLayer { get; set; }
     
-    public bool Alive { get; set; }
-    
     public Position Position { get; set; }
     
     
@@ -46,31 +44,32 @@ public class Human: IHuman<ForestLayer>, IPositionable
 
         if (listPosition.Any())
         {
-            if(WoodStorage < 10 || WoodStorage < WoodConsumption) CutDownTree(listPosition);
+             CutDownTree(listPosition);
             
             // Spread the Tree
             Random rnd = new Random();
-            if (rnd.NextDouble() < HarvestRate )  FruitHarvest(listPosition);
+            //if (rnd.NextDouble() < HarvestRate )  FruitHarvest(listPosition);
             if (rnd.NextDouble() < PlantingRate) PlantingTree(listPosition);
         }
         
         Move();
     }
 
-    public void Move()
+    private void Move()
     {
         // Only Move when the WoodStorage low 
         if (WoodStorage < 10 || WoodStorage < WoodConsumption)
         {
-            var foundTree = ForestLayer.TreeEnvironment.Explore(Position, 10).ToList().Map(t => t.Position);
-            if (foundTree.Count > 0)
-            {
-                ForestLayer.HumanEnvironment.MoveTo(this, foundTree.First(), Movement);
-            }
-            else
-            {
-                ForestLayer.HumanEnvironment.MoveTo(this, ForestLayer.NewRandomeLocation(), Movement);
-            }
+        var foundTree = ForestLayer.TreeEnvironment.Explore(Position, 5).ToList().Map(t => t.Position);
+        if (foundTree.Count > 0)
+        {
+            ForestLayer.HumanEnvironment.MoveTo(this, foundTree.First(), Movement);
+        }
+        else
+        {
+            ForestLayer.HumanEnvironment.MoveTo(this, ForestLayer.NewRandomeLocation(), Movement);
+            
+        }
         } else
         {
             WoodStorage -= 1 * WoodConsumption; 
@@ -78,47 +77,26 @@ public class Human: IHuman<ForestLayer>, IPositionable
 
     }
 
-    public void CutDownTree(List<Position> positions)
+
+    private void CutDownTree(List<Position> positions)
     {
-        foreach (var treePosition in positions)
+        foreach (var treePosition in from treePosition in positions let treeAtLoc = ForestLayer.GetTree(treePosition) where treeAtLoc != null where treeAtLoc.Wood != 0 select treePosition)
         {
-            Tree.Tree treeAtLoc = ForestLayer.GetTree(treePosition);
-            if (treeAtLoc != null)
-            {
-                if(treeAtLoc.State == State.Adult){
-                    if (treeAtLoc.Wood != 0)
-                    {
-                        WoodStorage += ForestLayer.GatherWood(treePosition, WoodConsumption);
-                        ForestLayer.HurtTree(treePosition,Damage);
-                    }
-                }
-            }
-          
+            WoodStorage += ForestLayer.GatherWood(treePosition, WoodConsumption);
+            ForestLayer.HurtTree(treePosition,Damage);
         }
     }
 
-    public void FruitHarvest(List<Position> positions)
+    private void FruitHarvest(List<Position> positions)
     {
-        foreach (var treePosition in positions)
+        foreach (var treePosition in from treePosition in positions let treeAtLoc = ForestLayer.GetTree(treePosition) where treeAtLoc != null where treeAtLoc.State == State.Adult where treeAtLoc.Fruit != 0 select treePosition)
         {
-            Tree.Tree treeAtLoc = ForestLayer.GetTree(treePosition);
-            if (treeAtLoc != null)
-            {
-                if (treeAtLoc.State == State.Adult)
-                {
-                    if (treeAtLoc.Fruit != 0)
-                    {
-                        ForestLayer.GatherFruit(treePosition,10* HarvestRate);
-                        ForestLayer.HurtTree(treePosition, Damage - 5);
-                    }
-                }
-            }
-
-           
+            ForestLayer.GatherFruit(treePosition,10* HarvestRate);
+            ForestLayer.HurtTree(treePosition, Damage - 5);
         }
     }
 
-    public void PlantingTree(List<Position> positions)
+    private void PlantingTree(List<Position> positions)
     {
         var tree = ForestLayer.GetTree(positions.First()); 
         if(tree != null) ForestLayer.Spread(tree,Position);

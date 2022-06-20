@@ -19,7 +19,7 @@ namespace TreeModel.Model.Tree
         
         
         public ForestLayer ForestLayer { get; set; }
-        public State State { get; set; } = State.Seedling;
+        public State State { get; set; } = State.Juvenile;
         public int Age { get; set; } = 1;
         public double Wood { get; set; } 
         
@@ -54,7 +54,7 @@ namespace TreeModel.Model.Tree
                 ProduceFruits();
                 
                 // Spread the Tree
-                    Random rnd = new Random();
+                Random rnd = new Random();
                 var value = rnd.NextDouble();
             
                 if( value< SpreadRate ) ForestLayer.Spread(this, ForestLayer.NewRandomeLocation());

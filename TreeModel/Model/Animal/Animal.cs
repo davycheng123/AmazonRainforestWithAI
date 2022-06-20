@@ -84,7 +84,7 @@ public class Animal : IAnimal<ForestLayer>
 
         // Lower the Life point if the Energy to low
         if (Energy < 1) LifePoints--;
-        Energy -= 1 * ConsumptionRate;
+        Energy -= 0.5 * ConsumptionRate;
         
         
         // Dying condition

@@ -61,7 +61,7 @@ public class ForestLayer : RasterLayer
         {
             var animals =_agentManager.Spawn<Animal.Animal,ForestLayer>(null, a =>
             {
-                a.Age = rnd.Next(0, at.MaxAge * 365);
+                a.Age = rnd.Next(0, at.MaxAge * 180);
                 a.MovementSpeed = at.MovementSpeed;
                 a.Carnivore = at.Carnivore;
                 a.Herbivore = at.Herbivore;
@@ -111,7 +111,7 @@ public class ForestLayer : RasterLayer
             a.Energy = 50;
             a.ConsumptionRate = inputAnimal.ConsumptionRate;
             a.MatureAge= inputAnimal.MatureAge * 365;
-            a.MaxAge = rnd.Next((int)(inputAnimal.MaxAge*0.8),inputAnimal.MaxAge) * 365;
+            a.MaxAge = rnd.Next((int)(inputAnimal.MaxAge*0.5),inputAnimal.MaxAge) * 365;
             a.LifePoints =100;
             a.Poop2Tree = inputAnimal.Poop2Tree;
             a.Position = newpos;
@@ -135,7 +135,7 @@ public class ForestLayer : RasterLayer
         
         var types = new List<TreeType>();
         TreeTypes.ForEach(s => types.Add( _entityManager.Create<TreeType>("Name", s)));
-        Random rnd = new Random();
+        var rnd = new Random();
         types.ForEach(tt =>
         {
             var trees =_agentManager.Spawn<Tree.Tree,ForestLayer>(null, t =>
@@ -209,7 +209,8 @@ public class ForestLayer : RasterLayer
         {
             if (TreeEnvironment.Entities.Any(t => t.Position.Equals(tree)))
             {
-                var foundTree = TreeEnvironment.Entities.First(t => t.Position.Equals(tree));
+                var foundTree = TreeEnvironment.Entities.FirstOrDefault(t => t.Position.Equals(tree));
+                if (foundTree == null) return 0;
                 foundTree.Wood -= amount;
                 if (foundTree.Wood > 0)
                 {
@@ -228,7 +229,8 @@ public class ForestLayer : RasterLayer
         {
             if (TreeEnvironment.Entities.Any(t => t.Position.Equals(tree)))
             {
-                var foundTree = TreeEnvironment.Entities.First(t => t.Position.Equals(tree));
+                var foundTree = TreeEnvironment.Entities.FirstOrDefault(t => t.Position.Equals(tree));
+                if (foundTree == null) return 0;
                 foundTree.Fruit -= amount;
                 if (foundTree.Fruit > 0)
                 {
@@ -247,7 +249,8 @@ public class ForestLayer : RasterLayer
         {
             if (TreeEnvironment.Entities.Any(t => t.Position.Equals(tree)))
             {
-                var foundTree = TreeEnvironment.Entities.First(t => t.Position.Equals(tree));
+                var foundTree = TreeEnvironment.Entities.FirstOrDefault(t => t.Position.Equals(tree));
+                if (foundTree == null) return;
                 foundTree.LifePoints -= amount;
                 if (foundTree.LifePoints < 1)
                 {
@@ -261,7 +264,9 @@ public class ForestLayer : RasterLayer
         {
             if (TreeEnvironment.Entities.Any(t => t.Position.Equals(tree)))
             {
-                return TreeEnvironment.Entities.First(t => t.Position.Equals(tree)).Wood;
+                var foundTree = TreeEnvironment.Entities.FirstOrDefault(t => t.Position.Equals(tree));
+                if (foundTree == null) return 0;
+                return foundTree.Wood;
             }
 
             return -1;
@@ -271,7 +276,9 @@ public class ForestLayer : RasterLayer
         {
             if (TreeEnvironment.Entities.Any(t => t.Position.Equals(tree)))
             {
-                return TreeEnvironment.Entities.First(t => t.Position.Equals(tree)).Fruit;
+                var foundTree = TreeEnvironment.Entities.FirstOrDefault(t => t.Position.Equals(tree));
+                if (foundTree == null) return 0;
+                return foundTree.Fruit;
             }
 
             return -1;
@@ -281,7 +288,9 @@ public class ForestLayer : RasterLayer
         {
             if (TreeEnvironment.Entities.Any(t => t.Position.Equals(tree)))
             {
-                return TreeEnvironment.Entities.First(t => t.Position.Equals(tree)).Age;
+                var foundTree = TreeEnvironment.Entities.FirstOrDefault(t => t.Position.Equals(tree));
+                if (foundTree == null) return 0;
+                return foundTree.Age;
             }
 
             return -1;
@@ -301,7 +310,9 @@ public class ForestLayer : RasterLayer
         {
             if (TreeEnvironment.Entities.Any(t => t.Position.Equals(tree)))
             {
-                return TreeEnvironment.Entities.First(t => t.Position.Equals(tree)).State;
+                var foundTree = TreeEnvironment.Entities.FirstOrDefault(t => t.Position.Equals(tree));
+                if (foundTree == null) return 0;
+                return foundTree.State;
             }
 
             return State.Nothing;
@@ -312,7 +323,7 @@ public class ForestLayer : RasterLayer
         {
             if (TreeEnvironment.Entities.Any(t => t.Position.Equals(tree)))
             {
-                return TreeEnvironment.Entities.First(t => t.Position.Equals(tree)).Alive;
+                return TreeEnvironment.Entities.FirstOrDefault(t => t.Position.Equals(tree)).Alive;
             }
 
             return false;
@@ -335,7 +346,6 @@ public class ForestLayer : RasterLayer
         {
             var humans =_agentManager.Spawn<Human.Human,ForestLayer>(null, h =>
             {
-                h.Alive = ht.Alive;
                 h.Movement = ht.Movement;
                 h.WoodConsumption = ht.WoodConsumption;
                 h.WoodStorage = ht.WoodStorage;
