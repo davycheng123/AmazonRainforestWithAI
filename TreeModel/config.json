@@ -1,7 +1,7 @@
 {
   "globals": {
     "startTime": "2022-01-01T10:00:00.000Z",
-    "endTime": "2300-01-01T10:00:00.000Z",
+    "endTime": "2080-01-01T10:00:00.000Z",
     "deltaT": 1,
     "deltaTUnit": "weeks",
     "output": "csv",
@@ -36,13 +36,13 @@
     },
     {
       "name": "InitialPositionLayer",
-      "file": "Resources/tree_map_small.csv"
+      "file": "Resources/converted_map.csv"
     },
     {
       "name": "ForestLayer",
       "file": "Resources/trees_small.csv",
-      "dimensionx": 100,
-      "dimensiony": 100,
+      "dimensionx": 332,
+      "dimensiony": 239,
       "mapping": [
         {
          "parameter": "AnimalTypes","value" : ["Monkey","Bird"]
