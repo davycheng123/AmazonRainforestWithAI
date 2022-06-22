@@ -101,4 +101,11 @@ public class Human: IHuman<ForestLayer>, IPositionable
         var tree = ForestLayer.GetTree(positions.First()); 
         if(tree != null) ForestLayer.Spread(tree,Position);
     }
+
+    private void killTree(List<Position> positions)
+    {
+        var tree = positions.FirstOrDefault();
+        if (tree == null) return;
+        ForestLayer.GetTree(tree).Die();
+    }
 }
