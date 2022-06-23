@@ -53,7 +53,6 @@ public class Human: IHuman<ForestLayer>, IPositionable
 
     private void Move()
     {
-        //The Animal will try to find tree to move to
         if (_adultTree.Count > 0)
         {
             ForestLayer.HumanEnvironment.MoveTo(this, _adultTree.First(),Movement);
