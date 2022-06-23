@@ -2,7 +2,6 @@ using System;
 using Mars.Interfaces.Environments;
 using System.Collections.Generic;
 using System.Linq;
-using Mars.Interfaces.Annotations;
 using TreeModel.Model.Environment;
 using ServiceStack;
 namespace TreeModel.Model.Animal;
@@ -10,11 +9,11 @@ namespace TreeModel.Model.Animal;
 public class Animal : IAnimal<ForestLayer>
 {
     private List<Position> _adultTree;
-    public ForestLayer ForestLayer { get; set; }
+    private ForestLayer ForestLayer { get; set; }
     
     public TerrainLayer TerrainLayer { get; set; }
     
-    public bool Alive { get; set; }
+    private bool Alive { get; set; }
 
     public Position Position { get; set; }
     
@@ -77,10 +76,10 @@ public class Animal : IAnimal<ForestLayer>
         Random rnd = new Random();
         
         // Reproduce
-        const int daysToReproduce = 150;
-        // ForestLayer.GetCurrentTick() % daysToReproduce == 0
-        if(Age % daysToReproduce == 0 && (Energy > 60) && ForestLayer.ExploreAnimals(Position,1).Count > 2 && rnd.NextDouble() < ReproduceRate ) 
+        const int daysToReproduce = 100;
+        if(ForestLayer.GetCurrentTick() % daysToReproduce == 0 && ForestLayer.ExploreAnimals(Position,1).Count > 2 && rnd.NextDouble() < ReproduceRate ) 
             ForestLayer.Reproduce(this);
+
 
         // Lower the Life point if the Energy to low
         if (Energy < 1) LifePoints--;
@@ -114,22 +113,6 @@ public class Animal : IAnimal<ForestLayer>
 
     public void Consume()
     {
-        /*
-        if (Carnivore)
-        {
-<<<<<<< HEAD
-            var AnimalNearby = ForestLayer.ExploreAnimals(Position,(int)MovementSpeed).First();
-=======
-            // Needed Fruit for full health
-            var fruitNeed = (100 - Energy) / 20;
-        
-            // Gather Fruit from a tree, lower the Fruits count
-            Energy += 1 * (ForestLayer.GatherFruit(Position, ConsumptionRate)) ;
-            LifePoints += (int) (1* ConsumptionRate);
->>>>>>> b871ccb (#human.cs implement)
-            
-        }
-        */
         
         if (Herbivore)
         {
@@ -169,13 +152,11 @@ public class Animal : IAnimal<ForestLayer>
 
     public void Die()
     {
-
         Alive = false;
         // Benefit the Nutrient and the Water 
         ForestLayer.TerrainLayer.AddSoilNutrients(Position,50);
         ForestLayer.AnimalEnvironment.Remove(this);
     }
-
     
     
 }

@@ -23,8 +23,8 @@ public class ForestLayer : RasterLayer
     public SpatialHashEnvironment<Human.Human> HumanEnvironment;
     //
     public TerrainLayer TerrainLayer { get; set; }
-    public IAgentManager _agentManager;
-    public IEntityManager _entityManager;
+    public IAgentManager AgentManager;
+    public IEntityManager EntityManager;
     
 
     [PropertyDescription]
@@ -40,11 +40,13 @@ public class ForestLayer : RasterLayer
     public override bool InitLayer(LayerInitData layerInitData, RegisterAgent registerAgentHandle, UnregisterAgent unregisterAgent)
     {
         base.InitLayer(layerInitData, registerAgentHandle, unregisterAgent);
-        _agentManager = layerInitData.Container.Resolve<IAgentManager>();
-        _entityManager = layerInitData.Container.Resolve<IEntityManager>();
+        AgentManager = layerInitData.Container.Resolve<IAgentManager>();
+        EntityManager = layerInitData.Container.Resolve<IEntityManager>();
         TreeEnvironment = new SpatialHashEnvironment<Tree.Tree>(Width, Height);
         AnimalEnvironment = new SpatialHashEnvironment<Animal.Animal>(Width, Height);
         HumanEnvironment = new SpatialHashEnvironment<Human.Human>(Width, Height);
+        
+       
         
         SpawnAnimals();
         SpawnTrees();
@@ -55,11 +57,11 @@ public class ForestLayer : RasterLayer
     private void SpawnAnimals()
     {
         var types = new List<AnimalType>();
-        AnimalTypes.ForEach(s => types.Add( _entityManager.Create<AnimalType>("Name", s)));
+        AnimalTypes.ForEach(s => types.Add( EntityManager.Create<AnimalType>("Name", s)));
         Random rnd = new Random();
         types.ForEach(at =>
         {
-            var animals =_agentManager.Spawn<Animal.Animal,ForestLayer>(null, a =>
+            var animals =AgentManager.Spawn<Animal.Animal,ForestLayer>(null, a =>
             {
                 a.Age = rnd.Next(0, at.MaxAge * 180);
                 a.MovementSpeed = at.MovementSpeed;
@@ -99,7 +101,7 @@ public class ForestLayer : RasterLayer
     {
         Position newpos = inputAnimal.Position; 
         
-        var animal = _agentManager.Spawn<Animal.Animal, ForestLayer>(null, a =>
+        var animal = AgentManager.Spawn<Animal.Animal, ForestLayer>(null, a =>
         {
             Random rnd = new Random();
             a.Age = 1;
@@ -111,7 +113,7 @@ public class ForestLayer : RasterLayer
             a.Energy = 50;
             a.ConsumptionRate = inputAnimal.ConsumptionRate;
             a.MatureAge= inputAnimal.MatureAge * 365;
-            a.MaxAge = rnd.Next((int)(inputAnimal.MaxAge*0.5),inputAnimal.MaxAge) * 365;
+            a.MaxAge = 1 * 365;
             a.LifePoints =100;
             a.Poop2Tree = inputAnimal.Poop2Tree;
             a.Position = newpos;
@@ -134,11 +136,11 @@ public class ForestLayer : RasterLayer
     {
         
         var types = new List<TreeType>();
-        TreeTypes.ForEach(s => types.Add( _entityManager.Create<TreeType>("Name", s)));
+        TreeTypes.ForEach(s => types.Add( EntityManager.Create<TreeType>("Name", s)));
         var rnd = new Random();
         types.ForEach(tt =>
         {
-            var trees =_agentManager.Spawn<Tree.Tree,ForestLayer>(null, t =>
+            var trees =AgentManager.Spawn<Tree.Tree,ForestLayer>(null, t =>
             {
                 t.Name = tt.Name;
                 t.ProductionRate = tt.ProductionRate;
@@ -175,6 +177,7 @@ public class ForestLayer : RasterLayer
     public void Spread(Tree.Tree inputTree, Position position)
     {
         Position newpos; 
+        if (inputTree == null) return;
         // We ask first if the posotion we want to spawn tree on already have tree on it 
         if (TreeEnvironment.Entities.Any(t => t.Position.Equals(position)))
         {
@@ -186,7 +189,7 @@ public class ForestLayer : RasterLayer
         {
             newpos = position; 
         }
-        var tree = _agentManager.Spawn<Tree.Tree, ForestLayer>(null, t =>
+        var tree = AgentManager.Spawn<Tree.Tree, ForestLayer>(null, t =>
             {
                 t.Name = inputTree.Name;
                 t.ProductionRate = inputTree.ProductionRate;
@@ -296,12 +299,13 @@ public class ForestLayer : RasterLayer
             return -1;
         }
 
-        public Tree.Tree GetTree(Position pos)
-        {
-            if (pos == null) return null;
+        public Tree.Tree GetTree(Position pos){
+
             if (TreeEnvironment.Entities.Any(t => t.Position.Equals(pos)))
             {
-                return TreeEnvironment.Entities.FirstOrDefault(t => t.Position.Equals(pos));
+                var foundTree = TreeEnvironment.Entities.FirstOrDefault(t => t.Position.Equals(pos));
+                if (foundTree == null) return null ;
+                return foundTree;
             }
             return null;
         }
@@ -340,18 +344,16 @@ public class ForestLayer : RasterLayer
     private void SpawnHumans()
     {
         var types = new List<HumanType>();
-        HumanTypes.ForEach(s => types.Add( _entityManager.Create<HumanType>("Name", s)));
+        HumanTypes.ForEach(s => types.Add( EntityManager.Create<HumanType>("Name", s)));
         Random rnd = new Random();
         types.ForEach(ht =>
         {
-            var humans =_agentManager.Spawn<Human.Human,ForestLayer>(null, h =>
+            var humans =AgentManager.Spawn<Human.Human,ForestLayer>(null, h =>
             {
                 h.Movement = ht.Movement;
-                h.WoodConsumption = ht.WoodConsumption;
-                h.WoodStorage = ht.WoodStorage;
+                h.DaysToCut = ht.DaysToCut;
                 h.PlantingRate = ht.PlantingRate;
                 h.HarvestRate = ht.HarvestRate;
-                h.Damage = ht.Damage;
                 if (InitialPositionLayer.SpawnPositionsHuman.IsEmpty())
                 {
                     var x = rnd.Next(HumanEnvironment.DimensionX);

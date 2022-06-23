@@ -10,7 +10,6 @@ namespace TreeModel.Model.Tree
     public class Tree : ITree<ForestLayer>
     {
         public string Name { get; set; }
-        public int AmountToSpawn { get; set; } = 365;
         public int MaxAge { get; set; }
         public int MatureAge { get; set; }          
         public double ConsumptionRate { get; set;}  //For the Nutrient and the Water
@@ -94,7 +93,7 @@ namespace TreeModel.Model.Tree
         }
         
 
-        public void IncreaseWood()
+        private void IncreaseWood()
         {
             switch(State)
             {
@@ -108,7 +107,6 @@ namespace TreeModel.Model.Tree
             }
         }
     
-        // TODO: Affect of Water and Nutrient
         public void ProduceFruits()
         {
             
@@ -123,11 +121,12 @@ namespace TreeModel.Model.Tree
 
         public void Die()
         {
+            ForestLayer.TreeEnvironment.Remove(this);
             Alive = false;
             // Check on Wood Value
             if (Wood == 0)
             {
-                ForestLayer.TreeEnvironment.Remove(this);
+                
             }
             
             State = State.DeadWood;
@@ -143,7 +142,7 @@ namespace TreeModel.Model.Tree
             
         }
 
-        public double NutrAndWaterEffect(Position position)
+        private double NutrAndWaterEffect(Position position)
         {
             return ((ForestLayer.TerrainLayer.GetSoilNutrients(position) + ForestLayer.TerrainLayer.GetWaterLevel(position))/100) +1;
         }
