@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
+/*
+Generates a InitialPosition file !!with random positions!!
+*/
 public class CVSGEN3 {
 
     public static void main(String[] args) {

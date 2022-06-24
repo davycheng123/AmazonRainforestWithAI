@@ -3,7 +3,10 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Objects;
-
+/*
+Converts a geodata map to a initialposition file and back.
+Needs to be compiled!
+*/
 public class ConvertMap {
 
     public static void main(String[] args) {

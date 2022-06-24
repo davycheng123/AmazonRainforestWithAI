@@ -2,6 +2,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.concurrent.ThreadLocalRandom;
 
+/*
+ Generates the terrain file 
+*/
 public class CVSGEN2 {
 
     public static void main(String[] args) {
@@ -37,7 +40,7 @@ public class CVSGEN2 {
             sb.deleteCharAt(sb.length()-1);
             sb.append("\n");
         }
-        try(FileWriter fw = new FileWriter("resource/g2.csv")){
+        try(FileWriter fw = new FileWriter("resource/terrain_gen.csv")){
             fw.write(sb.toString());
         }catch (IOException e){e.printStackTrace();}
 

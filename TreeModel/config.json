@@ -32,7 +32,7 @@
     },
     {
       "name": "TerrainLayer",
-      "file": "Resources/terrain_small.csv"
+      "file": "Resources/terrain_332x239.csv"
     },
     {
       "name": "InitialPositionLayer",

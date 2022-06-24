@@ -105,8 +105,7 @@ public class Human: IHuman<ForestLayer>, IPositionable
     {
         var tree = ForestLayer.ExploreTrees(Position,10);
         if (!tree.IsEmpty()) ForestLayer.HurtTree( tree.First(),100);
-           
-        //Console.Write("Kill that bitch");
+        
     }
 
 }

@@ -2,6 +2,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.concurrent.ThreadLocalRandom;
 
+/*
+    Do not use! Deprecated!
+*/
 public class CVSGEN {
     public static void main(String[] args) {
         int x = 100;
