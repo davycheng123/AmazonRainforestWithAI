@@ -1,4 +1,4 @@
 Name;AmountToSpawn;MaxAge;MatureAge;ConsumptionRate;GrowRate;ProductionRate;Fruits;Woods;SpreadRate
-PalmTree;200;30;5;1;0.5;0.6;1000;1050;0.00000
-BrazilNutTree;200;500;10;0.8;0.1;1;5000;19200;0.00000
-NutmegTree;200;60;8;1;1;1.3;7005;10120;0.0
+kapokTree;200;60;7;1;1;1;15;2000;0.0001
+rubberTree;200;40;4;1;1;1;10.25;1500;0.00003
+acaiPalm;200;20;5;1;1;1;17.3;500;0.001

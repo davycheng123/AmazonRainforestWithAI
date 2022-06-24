@@ -1,9 +1,9 @@
 {
   "globals": {
     "startTime": "2022-01-01T10:00:00.000Z",
-    "endTime": "2100-01-01T10:00:00.000Z",
+    "endTime": "2072-01-01T10:00:00.000Z",
     "deltaT": 1,
-    "deltaTUnit": "months",
+    "deltaTUnit": "weeks",
     "output": "csv",
     "options": {
       "delimiter": ";",
@@ -48,7 +48,7 @@
          "parameter": "AnimalTypes","value" : ["Monkey","Bird"]
         },
         {
-          "parameter": "TreeTypes","value" : ["PalmTree","BrazilNutTree","NutmegTree"]
+          "parameter": "TreeTypes","value" : ["kapokTree", "rubberTree", "acaiPalm"]
         }
       ,
         {
