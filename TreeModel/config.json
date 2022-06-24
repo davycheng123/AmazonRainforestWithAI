@@ -45,7 +45,7 @@
       "dimensiony": 239,
       "mapping": [
         {
-         "parameter": "AnimalTypes","value" : ["Monkey","Bird"]
+         "parameter": "AnimalTypes","value" : ["Capuchin Monkey","Scarlet Macaw"]
         },
         {
           "parameter": "TreeTypes","value" : ["kapokTree", "rubberTree", "acaiPalm"]
