@@ -21,7 +21,7 @@ public class ForestLayer : RasterLayer
     public SpatialHashEnvironment<Tree.Tree> TreeEnvironment;
     public SpatialHashEnvironment<Animal.Animal> AnimalEnvironment;
     public SpatialHashEnvironment<Human.Human> HumanEnvironment;
-    //
+    
     public TerrainLayer TerrainLayer { get; set; }
     public IAgentManager AgentManager;
     public IEntityManager EntityManager;
@@ -45,9 +45,7 @@ public class ForestLayer : RasterLayer
         TreeEnvironment = new SpatialHashEnvironment<Tree.Tree>(Width, Height);
         AnimalEnvironment = new SpatialHashEnvironment<Animal.Animal>(Width, Height);
         HumanEnvironment = new SpatialHashEnvironment<Human.Human>(Width, Height);
-        
-       
-        
+
         SpawnAnimals();
         SpawnTrees();
         SpawnHumans();
@@ -76,6 +74,7 @@ public class ForestLayer : RasterLayer
                 a.LifePoints = at.LifePoints;
                 a.Poop2Tree = at.Poop2Tree;
                 a.ReproduceRate = at.ReproduceRate;
+                a.DaysToReproduce = at.DaysToReproduce;
                 if (InitialPositionLayer.SpawnPositionsAnimal.IsEmpty())
                 {
                     var x = rnd.Next(AnimalEnvironment.DimensionX);
@@ -103,7 +102,6 @@ public class ForestLayer : RasterLayer
         
         var animal = AgentManager.Spawn<Animal.Animal, ForestLayer>(null, a =>
         {
-            Random rnd = new Random();
             a.Age = 1;
             a.MovementSpeed = inputAnimal.MovementSpeed;
             a.Carnivore = inputAnimal.Carnivore;
@@ -117,6 +115,7 @@ public class ForestLayer : RasterLayer
             a.LifePoints =100;
             a.Poop2Tree = inputAnimal.Poop2Tree;
             a.Position = newpos;
+            a.DaysToReproduce = inputAnimal.DaysToReproduce;
         } ) ;
         if (animal != null)
         {
@@ -183,7 +182,7 @@ public class ForestLayer : RasterLayer
         {
             // If it not free
             // RandomeSpot
-            newpos = NewRandomeLocation();
+            newpos = NewRandomLocation();
         }
         else
         {
@@ -318,7 +317,6 @@ public class ForestLayer : RasterLayer
                 if (foundTree == null) return 0;
                 return foundTree.State;
             }
-
             return State.Nothing;
         }
         
@@ -327,7 +325,7 @@ public class ForestLayer : RasterLayer
         {
             if (TreeEnvironment.Entities.Any(t => t.Position.Equals(tree)))
             {
-                return TreeEnvironment.Entities.FirstOrDefault(t => t.Position.Equals(tree)).Alive;
+                return TreeEnvironment != null && TreeEnvironment.Entities.FirstOrDefault(t => t.Position.Equals(tree))!.Alive;
             }
 
             return false;
@@ -376,7 +374,7 @@ public class ForestLayer : RasterLayer
     }
 
 
-    public Position NewRandomeLocation()
+    public Position NewRandomLocation()
     {
         var rnd = new Random();
         var x = TreeEnvironment.DimensionX;

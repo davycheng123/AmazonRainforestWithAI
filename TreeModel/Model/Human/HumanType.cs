@@ -18,7 +18,6 @@ public class HumanType: IEntity
 
     public int AmountToSpawn { get; set; }
     
-
     public Guid ID { get; set; }
 
 }

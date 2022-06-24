@@ -14,7 +14,7 @@ public class AnimalType : IEntity
     public bool Herbivore { get; set; }
     public bool Carnivore { get; set; }
     
-
+    public int DaysToReproduce { get; set; }
     public double LifePoints { get; set; }
     public double Energy { get; set; }
     

@@ -51,7 +51,7 @@ public class Human: IHuman<ForestLayer>, IPositionable
         Move();
     }
 
-    private void Move()
+    public void Move()
     {
         if (_adultTree.Count > 0)
         {
@@ -67,12 +67,10 @@ public class Human: IHuman<ForestLayer>, IPositionable
             ForestLayer.HumanEnvironment.MoveTo(this, new Position(x, y), Movement);
         }
 
-
     }
 
-    
 
-    private void FruitHarvest()
+    public void FruitHarvest()
     {
         Random rnd = new Random();
         var value = rnd.NextDouble();
@@ -84,12 +82,11 @@ public class Human: IHuman<ForestLayer>, IPositionable
             if (fruitLeft > 0)
             {
                 ForestLayer.GatherFruit(Position, 5);
-
             }
         }
     }
 
-    private void PlantingTree()
+    public void PlantingTree()
     {
         Random rnd = new Random();
         var value = rnd.NextDouble();
@@ -100,12 +97,11 @@ public class Human: IHuman<ForestLayer>, IPositionable
             if (!tree.IsEmpty()) ForestLayer.Spread( ForestLayer.GetTree(tree.First()),Position);
         }
     }
-    
-    private void KillTree()
+
+    public void KillTree()
     {
         var tree = ForestLayer.ExploreTrees(Position,10);
         if (!tree.IsEmpty()) ForestLayer.HurtTree( tree.First(),100);
-        
     }
 
 }

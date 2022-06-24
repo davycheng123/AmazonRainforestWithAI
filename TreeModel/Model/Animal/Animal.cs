@@ -36,6 +36,8 @@ public class Animal : IAnimal<ForestLayer>
     
     public double ReproduceRate { get; set; }
     
+    public int DaysToReproduce { get; set; }
+    
     // herbivore = eats plants/fruits
     public bool Herbivore { get; set; }
     
@@ -72,20 +74,16 @@ public class Animal : IAnimal<ForestLayer>
         // Age Increase
         Age++;
 
-
         Random rnd = new Random();
-        
         // Reproduce
-        const int daysToReproduce = 100;
-        if(ForestLayer.GetCurrentTick() % daysToReproduce == 0 && ForestLayer.ExploreAnimals(Position,1).Count > 2 && rnd.NextDouble() < ReproduceRate ) 
+        if(ForestLayer.GetCurrentTick() % DaysToReproduce == 0 && ForestLayer.ExploreAnimals(Position,1).Count > 2 && rnd.NextDouble() < ReproduceRate ) 
             ForestLayer.Reproduce(this);
 
 
         // Lower the Life point if the Energy to low
         if (Energy < 1) LifePoints--;
         Energy -= 0.5 * ConsumptionRate;
-        
-        
+
         // Dying condition
         if (Age > MaxAge || LifePoints < 1) Die();
     }
@@ -106,7 +104,6 @@ public class Animal : IAnimal<ForestLayer>
             y = rnd.Next(y);
             ForestLayer.AnimalEnvironment.MoveTo(this, new Position(x, y), MovementSpeed);
         }
-
         // Lower the Energy when Moving
         Energy--;
     }
@@ -124,7 +121,6 @@ public class Animal : IAnimal<ForestLayer>
                 var fruitNeed = (100 - Energy) / 20;
         
                 // Gather Fruit from a tree, lower the Fruits count
-                
                 Energy += 10 * (ForestLayer.GatherFruit(Position, fruitNeed)) ;
                 LifePoints += 1 * ConsumptionRate;
 
@@ -137,7 +133,7 @@ public class Animal : IAnimal<ForestLayer>
     {
 
         ForestLayer.TerrainLayer.AddSoilNutrients(Position,10);
-        Random rnd = new Random();
+        var rnd = new Random();
         var value = rnd.NextDouble();
         
         if (value < Poop2Tree)
@@ -145,7 +141,6 @@ public class Animal : IAnimal<ForestLayer>
             var tree = ForestLayer.ExploreTrees(Position,1);
                     if (!tree.IsEmpty()) ForestLayer.Spread( ForestLayer.GetTree(tree.First()),Position);
         }
-        
         ForestLayer.TerrainLayer.AddSoilNutrients(Position,10);
 
     }
@@ -157,6 +152,4 @@ public class Animal : IAnimal<ForestLayer>
         ForestLayer.TerrainLayer.AddSoilNutrients(Position,50);
         ForestLayer.AnimalEnvironment.Remove(this);
     }
-    
-    
 }

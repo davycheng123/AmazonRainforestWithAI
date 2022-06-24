@@ -12,6 +12,7 @@ public class WeatherLayer : IWeatherLayer, ISteppedActiveLayer
 
     //chances
     public double RainfallChance { get; set; } = 0.7;
+    
     public double StormChance { get; set; }
     public double FireChance { get; set; } = 0.001;
 
