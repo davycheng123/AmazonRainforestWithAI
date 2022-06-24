@@ -24,20 +24,30 @@
   + We have finish the Model with Tree, Animal, Human, Terrain and the Weather.
   + We can see the interaction between them and see the affect of it. 
   + Simulation are prepared, not running state yet
+
+- 4.Version(24.06.2022):
+  + Model is up and running, it is ready for the simulation with 3 Agents: Tree, Human, Animals.
+  + Various tests are performed to find the most similar result to the real data.
+  + We gather enough data for our comparision.
+  + Visualization run on kepler, a website that you can run real data on.
+  + The Research question is ready as soon as we have the number after the simulation.
   
 ## 2 Week Goal: 
 #Date (31.05.2022)
 - All of the Agent and Layer are implemented, up and running.
-- Simulation are implemented
-- Finish small things like: Comment on Code and working on the documentation
+- Simulation are implemented.
 
 #Date (14.06.2022)
 - The Model should be visualized with result from the simulation
 - The Research question will be conducted with enough Data
 
+#Date (28.06.2022)
+- The Presentation should be done. 
+- The Project is cleaned without unused file. 
+- Finish small things like: Comment on Code and working on the documentation.
+
 ## Research Question(s):
 - What role do humans play in the growth of the rainforest? Would it make a big difference for the forest if humans were not included in the calculation?
-- What happens in the event of a fire or other rare event? Does that have a big impact on the rainforest? Because the temperatures in the forest are pretty much the same all year round.
 
 ## Topic: 
 Simulation of all aspects that have influenced the rainforest in the past and compare the result with different configurations 
@@ -49,10 +59,7 @@ This simulation is beneficial to the understanding of rainforests. Rainforests a
 This would include finding a better balance for growing and dying trees. When we know the rates and factors that are contributing, we will be able to predict the future of rainforests if we continue to treat the rainforests the way we have been. And when we can predict the future using the current rates, we can proactively curb the rate of deforestation.
 
 ## Visuals
-Simulation is still on developing process
-- We have made some progress with kepler
-- The State of the Trees are showed but not on our desired location. 
-- We are trying to work with real location for the next step
+Simulation is done with see able locations on the maps:
 
 Current visualization state can be seen with the 2 simulation samples in .html format. 
 - 2 year simulation is viewable and settings changeable.
@@ -63,7 +70,8 @@ Current visualization state can be seen with the 2 simulation samples in .html f
 - You can change the Parameter for the Tree, Animal, and Human in the .csv File so that you can either include all or just the tree and the animal
 - The Result of the Tree will be showed in the /bin folder. 
 - You will the a Tree.csv File there
-- On the Kepler Site the Tree.csv File shall be added for the input. 
+- You will have to first convert the output to Long and Lat Locations using the java-file in Resources/Scripts/src under the name "ConvertMap.java"
+- On the Kepler Site the converted Tree.csv File shall be added for the input. 
 - Set the long and lang param, to the x and y column. For proper visualization, set the colorization by the state of the tree.
 - With a filter set to the datetime you should see the Progress of the Tree growth throughout each Tick which is a Day in our Simulation
 
