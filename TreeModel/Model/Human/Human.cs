@@ -16,6 +16,8 @@ public class Human: IHuman<ForestLayer>, IPositionable
     public Position Position { get; set; }
     
     public int DaysToCut { get; set; }
+    
+    public int initDay { get; set; }
 
     public double Movement { get; set; }
     
@@ -39,7 +41,7 @@ public class Human: IHuman<ForestLayer>, IPositionable
     {
         _adultTree = ForestLayer.TreeEnvironment.Explore(Position, 10).ToList().Map(t => t.Position);
         
-        if (ForestLayer.GetCurrentTick() % DaysToCut == 0)
+        if ((ForestLayer.GetCurrentTick()+initDay) % DaysToCut == 0)
         {
             KillTree();
         }
@@ -101,7 +103,9 @@ public class Human: IHuman<ForestLayer>, IPositionable
     public void KillTree()
     {
         var tree = ForestLayer.ExploreTrees(Position,10);
-        if (!tree.IsEmpty()) ForestLayer.HurtTree( tree.First(),100);
+        if (!tree.IsEmpty())
+            ForestLayer.HurtTree(tree.First(), ForestLayer.GetCurrentTick() < 52 ? 65 : 95);
+            // to prevent the lumberjack cutting all the trees at the beginning
     }
 
 }
