@@ -1,7 +1,7 @@
 {
   "globals": {
-    "startTime": "2002-01-01T10:00:00.000Z",
-    "endTime": "2010-01-01T10:00:00.000Z",
+    "startTime": "2022-01-01T10:00:00.000Z",
+    "endTime": "2072-01-01T10:00:00.000Z",
     "deltaT": 1,
     "deltaTUnit": "weeks",
     "output": "csv",
@@ -45,7 +45,7 @@
       "dimensiony": 239,
       "mapping": [
         {
-         "parameter": "AnimalTypes","value" : ["Monkey","Bird"]
+         "parameter": "AnimalTypes","value" : ["Capuchin Monkey","Scarlet Macaw"]
         },
         {
           "parameter": "TreeTypes","value" : ["kapokTree", "rubberTree", "acaiPalm"]
