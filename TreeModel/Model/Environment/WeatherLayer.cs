@@ -83,14 +83,14 @@ public class WeatherLayer : IWeatherLayer, ISteppedActiveLayer
     }
 
     public void PostTick()
-    { 
-        const int daysPerPrint = 30;
-        if(GetCurrentTick() % daysPerPrint != 0) return;
+    {
+        const int divisionPerPrint = 52/2;
+        if(GetCurrentTick() % divisionPerPrint != 0) return;
         
         var trees= ForestLayer.TreeEnvironment.Entities.Count();
         var animals = ForestLayer.AnimalEnvironment.Entities.Count();
         var humans = ForestLayer.HumanEnvironment.Entities.Count();
     //    Console.WriteLine(GetCurrentTick()/daysPerPrint +" month(s) passed, animals: "+animals+" trees: "+trees +" humans: " +humans);
-        Console.WriteLine(GetCurrentTick()/daysPerPrint+";"+trees );
+        Console.WriteLine(GetCurrentTick()/divisionPerPrint+"th half years; "+trees );
     }
 }

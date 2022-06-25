@@ -99,6 +99,7 @@ public class ForestLayer : RasterLayer
     public void Reproduce(Animal.Animal inputAnimal)
     {
         Position newpos = inputAnimal.Position; 
+        var rnd = new Random();
         
         var animal = AgentManager.Spawn<Animal.Animal, ForestLayer>(null, a =>
         {
@@ -111,7 +112,8 @@ public class ForestLayer : RasterLayer
             a.Energy = 50;
             a.ConsumptionRate = inputAnimal.ConsumptionRate;
             a.MatureAge= inputAnimal.MatureAge * 365;
-            a.MaxAge = 1 * 365;
+            a.Age = rnd.Next(inputAnimal.MaxAge/2, inputAnimal.MaxAge)* 365;
+            a.MaxAge = rnd.Next(0, inputAnimal.MaxAge) * 365;
             a.LifePoints =100;
             a.Poop2Tree = inputAnimal.Poop2Tree;
             a.Position = newpos;
@@ -148,7 +150,7 @@ public class ForestLayer : RasterLayer
                 t.Wood = rnd.Next(0,(int)tt.Woods);
                 t.GrowRate = tt.GrowRate;
                 t.MatureAge = tt.MatureAge * 365;
-                t.MaxAge = rnd.Next((int)(tt.MaxAge*0.7), tt.MaxAge) * 365;
+                t.MaxAge = rnd.Next((int)(tt.MaxAge*0.8), tt.MaxAge) * 365;
                 t.SpreadRate = tt.SpreadRate;
                 if (InitialPositionLayer.SpawnPositionsTree.IsEmpty())
                 {
@@ -350,6 +352,7 @@ public class ForestLayer : RasterLayer
             {
                 h.Movement = ht.Movement;
                 h.DaysToCut = ht.DaysToCut;
+                h.initDay = rnd.Next(0, ht.DaysToCut);
                 h.PlantingRate = ht.PlantingRate;
                 h.HarvestRate = ht.HarvestRate;
                 if (InitialPositionLayer.SpawnPositionsHuman.IsEmpty())
