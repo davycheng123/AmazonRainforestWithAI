@@ -1,3 +1,4 @@
 Name; Movement;DaysToCut;PlantingRate;HarvestRate;AmountToSpawn
-Good;5;100;0.0009;0.001;0
-Bad;10;100;0.0;0.001;150
+Good;5;100;0.0009;0.001;55
+Bad;10;22;0.0;0.001;110
+

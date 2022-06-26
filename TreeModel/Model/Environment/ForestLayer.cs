@@ -22,11 +22,11 @@ public class ForestLayer : RasterLayer
     public SpatialHashEnvironment<Animal.Animal> AnimalEnvironment;
     public SpatialHashEnvironment<Human.Human> HumanEnvironment;
     
-    public TerrainLayer TerrainLayer { get; set; }
+    public TerrainLayer TerrainLayer { get; set;  }
     public IAgentManager AgentManager;
     public IEntityManager EntityManager;
     
-
+ 
     [PropertyDescription]
     public List<string> AnimalTypes { get; set; }
     
@@ -61,7 +61,7 @@ public class ForestLayer : RasterLayer
         {
             var animals =AgentManager.Spawn<Animal.Animal,ForestLayer>(null, a =>
             {
-                a.Age = rnd.Next(0, at.MaxAge * 180);
+                a.Age =                                                                      rnd.Next(0, at.MaxAge * 180);
                 a.MovementSpeed = at.MovementSpeed;
                 a.Carnivore = at.Carnivore;
                 a.Herbivore = at.Herbivore;
@@ -310,29 +310,7 @@ public class ForestLayer : RasterLayer
             }
             return null;
         }
-
-        public State GetState(Position tree)
-        {
-            if (TreeEnvironment.Entities.Any(t => t.Position.Equals(tree)))
-            {
-                var foundTree = TreeEnvironment.Entities.FirstOrDefault(t => t.Position.Equals(tree));
-                if (foundTree == null) return 0;
-                return foundTree.State;
-            }
-            return State.Nothing;
-        }
         
-
-        public bool IsAlive(Position tree)
-        {
-            if (TreeEnvironment.Entities.Any(t => t.Position.Equals(tree)))
-            {
-                return TreeEnvironment != null && TreeEnvironment.Entities.FirstOrDefault(t => t.Position.Equals(tree))!.Alive;
-            }
-
-            return false;
-        }
-
         public List<Position> ExploreTrees(Position explorer, int distance)
         {
             var result = TreeEnvironment.Explore(explorer, distance).ToList().Map(t => t.Position);
