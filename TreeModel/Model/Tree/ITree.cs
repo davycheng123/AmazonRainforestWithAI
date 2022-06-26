@@ -17,16 +17,22 @@ namespace TreeModel.Model.Tree
         /// Only adult trees produce fruit
         /// </summary>
         void ProduceFruits();
-
+        
         /// <summary>
-        /// Attempts to spread on to neighboring cells
+        /// Increases the amount of woos.
         /// </summary>
-        //void Spread();
+        void IncreaseWood();
 
 
         /// <summary>
         /// This kills the tree but it's corpse remains until it decays or was harvested
         /// </summary>
         void Die();
+        
+        /// <summary>
+        /// Check If the Tree old enough to change state
+        /// </summary>
+        void CheckState();
+        
     }
 }

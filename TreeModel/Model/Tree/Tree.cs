@@ -67,7 +67,7 @@ namespace TreeModel.Model.Tree
         public Guid ID { get; set; }
         public Position Position { get; set; }
 
-        private void CheckState()
+        public void CheckState()
         {
             // We say that after a year itr will change state from seeding to Juvenile
             if (365<Age && Age< MatureAge)
@@ -93,7 +93,7 @@ namespace TreeModel.Model.Tree
         }
         
 
-        private void IncreaseWood()
+        public void IncreaseWood()
         {
             switch(State)
             {
