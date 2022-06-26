@@ -115,3 +115,9 @@ Open source projects
 
 ## Project status
 The Base State is done with containing all the basics functions of the rainforest. 
+
+## All literatures are used for this project
+- "Major shifts in Amazon wildlife populations from recent intensification of floods and drough"- Richard Bodmer
+- "Modeling the Future Tree Distribution in a South African Savanna Ecosystem: An Agent-Based Model Approach" - Ulfia A. Lenfers, Nima Ahmady-Moghaddam , Daniel Glake , Florian Ocker, Julius Weyl and Thomas Clemen
+- " Structure, density and rarity in an Amazonian rainforest bird community" -  Cambridge University Press
+- "A spatial model of tree α-diversity and -density for the Amazon" - HANS TER STEEGE
