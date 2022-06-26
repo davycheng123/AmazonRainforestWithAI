@@ -1,4 +1,4 @@
 Name;AmountToSpawn;MaxAge;MatureAge;ConsumptionRate;GrowRate;ProductionRate;Fruits;Woods;SpreadRate
-kapokTree;200;60;7;1;1;1;15;2000;0.0001
-rubberTree;200;40;4;1;1;1;10.25;1500;0.00003
-acaiPalm;200;20;5;1;1;1;17.3;500;0.001
+kapokTree;1000;60;7;1;1;1;15;2000;0.0001
+rubberTree;1000;40;4;1;1;1;10.25;1500;0.00003
+acaiPalm;1000;20;5;1;1;1;17.3;500;0.001
