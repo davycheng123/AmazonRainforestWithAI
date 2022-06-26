@@ -97,5 +97,21 @@ Show your appreciation to those who have contributed to the project.
 ## License
 Open source projects
 
+## Milestones in git
+- 26.04.2022: Basic Template for the project 
+- 08.04.2022: Implement of the Tree.cs and TreeLayer.cs
+- 16.05.2022: Implement of the Animal.cs and AnimalLayer.cs
+- 17.05.2022: Implement of the TerrainLayer.cs
+- 24.05.2022: Implement of the Human.cs and HumanLayer.cs
+- 26.05.2022: Big Change to the structure of the model. All will be spawned on the ForestLayer, All of the Input can be changed through the csv file
+- 01.06.2022: First look of the visualization
+- 13.06.2022: Continue to improve functions that didn't work. Almost everything is running as intend to.
+- 20.06.2022: Found an important  Error in the Human.cs that it can't find the trees. 
+- 21.06.2022: 
+  * Add real map location for the simulation and the visualization. 
+  * Add the Java Scrip that convert the map location to something that our model can understand. #
+- 23.06.2022: Human error is fixed. The Model is ready to run test on.
+- 26.06.2022: Change all the Input File so that it is similar to the real data. Delete not important file the Project.
+
 ## Project status
-Developing
+The Base State is done with containing all the basics functions of the rainforest. 
