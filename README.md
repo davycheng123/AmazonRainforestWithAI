@@ -74,6 +74,10 @@ The current visualization state can be seen with the 2 simulation samples in .ht
 - On the Kepler Site the converted Tree.csv File shall be added for the input. 
 - Set the long and lang param, to the x and y column. For proper visualization, set the colorization by the state of the tree.
 - With a filter set to the datetime, you should see the progress of the tree growth throughout each tick which is a day in our simulation
+### Scripts
+- I want a terrain file: load CVSGEN2 in a IDE of your choice and change the x and y values accordingly. Then run it.
+- I want map for the InitialPositionLayer: "java ConvertMap path_to_file_with_geodata x y" in terminal.
+- I want to convert the output of the simulation: "java ConvertMap path_to_file_with_geodata path_to_file_with_output x y" in terminal.
 
 ## Usage
 - Finding a better balance for growing and consuming trees
