@@ -10,6 +10,7 @@
 *.userosscache
 *.sln.docstates
 *.opencover.xml
+*.html
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 ##################################################
